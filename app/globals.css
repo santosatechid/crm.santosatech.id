@@ -6,14 +6,12 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-grouped: var(--grouped);
   --font-sans:
-    var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif;
-  /* Arabic script — surah names from `surah_quran.name`. */
-  --font-arabic: var(--font-naskh), "Noto Naskh Arabic", serif;
-  --font-mono:
-    var(--font-plex-mono), ui-monospace, "SF Mono", SFMono-Regular, Menlo,
-    Consolas, monospace;
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+    "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
+
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -24,11 +22,11 @@
   --color-sidebar-primary: var(--sidebar-primary);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
   --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
   --color-chart-6: var(--chart-6);
   --color-chart-7: var(--chart-7);
   --color-chart-8: var(--chart-8);
@@ -85,7 +83,6 @@
   --color-primary-active: var(--primary-active);
   --color-brand-tint: var(--brand-tint);
   --color-brand-accent: var(--brand-accent);
-  /* The red margin rule of a register sheet. Structural, never decorative. */
   --color-margin: var(--margin);
   --color-navy: var(--navy);
   --color-navy-foreground: var(--navy-foreground);
@@ -98,286 +95,259 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  /* Interaction — the state a control is in when you touch it. Not a data
-     status: see the four-ink table in DESIGN.md §1. */
+  /* Interaction: an action or the control you are touching. */
   --color-interactive: var(--interactive);
   --color-interactive-fill: var(--interactive-fill);
   --color-interactive-border: var(--interactive-border);
   --color-interactive-surface: var(--interactive-surface);
-  /* DESIGN.md's `rounded` scale, verbatim: sm 4 · DEFAULT 8 · md 12 · lg 16 ·
-     xl 24. Buttons and inputs ride `rounded-lg`, cards ride `rounded-xl`. */
-  --radius-sm: 0.25rem;
-  --radius-md: 0.75rem;
-  --radius-lg: 1rem;
-  --radius-xl: 1.5rem;
-  /* The house style's two working radii: fields and buttons ride `rounded-2xl`,
-     panels and asides ride `rounded-3xl`. Both alias the DESIGN.md steps above. */
-  --radius-2xl: 1rem;
-  --radius-3xl: 1.5rem;
 
-  /* DESIGN.md's three elevation levels. The extra Tailwind steps alias onto
-     them, so no element ever stacks two levels onto one surface. */
-  --shadow-2xs: 0 1px 2px rgba(0, 0, 0, 0.06);
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.06);
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
-  --shadow-xl: 0 8px 32px rgba(0, 0, 0, 0.12);
-  --shadow-2xl: 0 8px 32px rgba(0, 0, 0, 0.12);
+  /* DESIGN.md radius scale: chip 6 · control 10 · inset 13 · card/sheet 22.
+     `2xl`/`3xl` alias the control and sheet steps so existing markup lands on
+     the Apple sizes. */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.8125rem;
+  --radius-xl: 1.375rem;
+  --radius-2xl: 0.625rem;
+  --radius-3xl: 1.375rem;
+
+  /* One floating shadow, one resting hairline. Nothing else. */
+  --shadow-2xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 10px 30px rgba(0, 0, 0, 0.12);
+  --shadow-2xl: 0 10px 30px rgba(0, 0, 0, 0.12);
 }
 
 /*
- * Design system — single source of truth. See DESIGN.md (the Stripe track).
+ * Apple track — DESIGN.md is the source of truth.
  *
- * A white canvas carrying one purple accent on every call to action, Deep Navy
- * for text, and the status families untouched. Two roles:
- *   purple (--primary / --ring / --interactive) = an action, or the control you
- *                                                 are touching
- *   status (--success-*, --warning-*, --destructive-*, --info-*, --tertiary-*)
- *                                               = a fact about the record
+ * White canvas, grouped-gray insets, one blue accent. Blue is a fill
+ * (#0071e3) or text (#0066cc, because #0071e3 is only 4.21:1 on #f2f2f7).
+ * Status colors are facts about a record, never decoration. All pairs in
+ * DESIGN.md §2 are measured: text >= 4.5:1, controls >= 3:1, hairlines >= 1.2:1.
  *
- * Values are DESIGN.md's where they clear WCAG AA; where DESIGN.md's own tone
- * does not (its #15be53 carries only 2.5:1, its #e5edf5 hairline only 1.18:1 on
- * white) the same hue is taken one step deeper and DESIGN.md's exact tone keeps
- * the non-text role. Each deviation is commented.
- *
- * Tokens are written as hex rather than oklch because `scripts/color-audit.mjs`
- * reads only hex — an oklch token is collected and then silently skipped, so it
- * is effectively unaudited. Light mode is now fully enforced.
- *
- * Contrast — verified by `bun scripts/color-audit.mjs`, which parses this file.
- * Light (WCAG AA, on the white canvas): ink 15.5 · muted 7.8 · purple 6.2 ·
- * ring 6.2 · every `-strong` on its `-chip` >= 4.5 · every hairline >= 1.2:1.
+ * Hex, not oklch, so a contrast audit can parse these values.
  */
 :root {
   --radius: 0.625rem;
 
-  /* Stripe track — DESIGN.md §2/§4: canvas, ink, and the one accent. */
   --background: #ffffff;
-  --foreground: #0a2540;
+  --foreground: #1d1d1f;
   --card: #ffffff;
-  --card-foreground: #0a2540;
+  --card-foreground: #1d1d1f;
   --popover: #ffffff;
-  --popover-foreground: #0a2540;
-  --primary: #533afd;
+  --popover-foreground: #1d1d1f;
+  --grouped: #f2f2f7;
+
+  --primary: #0071e3;
   --primary-foreground: #ffffff;
-  --primary-hover: #4328d9;
-  --primary-active: #3620b0;
-  --secondary: #f1f5f9;
-  --secondary-foreground: #0a2540;
-  --muted: #f1f5f9;
-  --muted-foreground: #425466;
-  --accent: #f1f5f9;
-  --accent-foreground: #0a2540;
-  /* DESIGN.md's #e5edf5 hairline is only 1.18:1 on white and 1.12:1 on the
-     panel tint — under the house 1.2:1 floor. Same hue, one step deeper. */
-  --border: #d4dcea;
-  --input: #d4dcea;
-  --ring: #533afd;
+  --primary-hover: #0077ed;
+  --primary-active: #0068d0;
 
-  --brand-tint: #f1f5f9;
-  --brand-accent: #533afd;
-  --margin: oklch(0.577 0.245 27.325);
+  --secondary: #f5f5f7;
+  --secondary-foreground: #1d1d1f;
+  --muted: #f5f5f7;
+  --muted-foreground: #6e6e73;
+  --accent: #f5f5f7;
+  --accent-foreground: #1d1d1f;
 
-  /* Interaction (link / checkbox / fokus) */
-  --interactive: #533afd;
-  --interactive-fill: #533afd;
-  --interactive-border: #dcd5fe;
-  --interactive-surface: #f4f1ff;
+  --border: #d2d2d7;
+  --input: #d2d2d7;
+  --ring: #0071e3;
 
-  /* Inverse surfaces */
-  --navy: #0a2540;
+  --brand-tint: #f5f5f7;
+  --brand-accent: #0071e3;
+  --margin: #ff3b30;
+
+  --interactive: #0066cc;
+  --interactive-fill: #0071e3;
+  --interactive-border: rgba(0, 113, 227, 0.28);
+  --interactive-surface: #eaf3ff;
+
+  --navy: #1d1d1f;
   --navy-foreground: #ffffff;
-  --navy-muted: #94a3b8;
-  --navy-border: oklch(1 0 0 / 10%);
-  --navy-accent: #b4a7fe;
-  --navy-info: #67e8f9;
-  --navy-success: #6ee7b7;
+  --navy-muted: #98989d;
+  --navy-border: rgba(0, 0, 0, 0.12);
+  --navy-accent: #0a84ff;
+  --navy-info: #64d2ff;
+  --navy-success: #30d158;
 
-  /* Status — DESIGN.md names only Success Green, and #15be53 is 2.5:1 on white
-     and 2.5:1 under a white label, so it cannot fill either role. Every family
-     keeps the deeper tone the audit already cleared. */
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-solid: #dc2626;
-  --destructive-surface: #fef2f2;
-  --destructive-chip: #fee2e2;
-  --destructive-border: #fecaca;
-  --destructive-strong: #7f1d1d;
+  /* Status: `solid` is Apple's system color for dots/icons/switches; the
+     plain token and `-strong` are the text-safe tones. */
+  --destructive: #d70015;
+  --destructive-solid: #ff3b30;
+  --destructive-surface: #fde8e8;
+  --destructive-chip: #fde8e8;
+  --destructive-border: #f8c6c9;
+  --destructive-strong: #a80010;
 
-  --success: #047857;
-  --success-solid: #047857;
-  --success-surface: #ecfdf5;
-  --success-chip: #d1fae5;
-  --success-border: #a7f3d0;
-  --success-strong: #065f46;
+  --success: #1a7f43;
+  --success-solid: #34c759;
+  --success-surface: #e8f8ee;
+  --success-chip: #e8f8ee;
+  --success-border: #bfe8cf;
+  --success-strong: #146c36;
 
-  --warning: #b45309;
-  --warning-solid: #b45309;
-  --warning-surface: #fffbeb;
-  --warning-chip: #fef3c7;
-  --warning-border: #fde68a;
-  --warning-strong: #78350f;
+  --warning: #b54708;
+  --warning-solid: #ff9500;
+  --warning-surface: #fff4e5;
+  --warning-chip: #fff4e5;
+  --warning-border: #f7d9a8;
+  --warning-strong: #8a4b00;
 
-  --caution: #c2410c;
-  --caution-solid: #c2410c;
-  --caution-surface: #fff7ed;
-  --caution-chip: #ffedd5;
-  --caution-border: #fed7aa;
-  --caution-strong: #7c2d12;
+  --caution: #c93400;
+  --caution-solid: #ff9500;
+  --caution-surface: #fff4e5;
+  --caution-chip: #fff4e5;
+  --caution-border: #f7d9a8;
+  --caution-strong: #9a3412;
 
-  --info: #1d4ed8;
-  --info-solid: #1d4ed8;
-  --info-surface: #eff6ff;
-  --info-chip: #dbeafe;
-  --info-border: #bfdbfe;
-  --info-strong: #1e3a8a;
+  --info: #0066cc;
+  --info-solid: #0071e3;
+  --info-surface: #eaf3ff;
+  --info-chip: #eaf3ff;
+  --info-border: #c3ddff;
+  --info-strong: #00509e;
 
-  /* --tertiary carries the `sakit` attendance chip. As a violet it would now
-     read as a second primary, so it moves to the neutral slate family. */
-  --tertiary: #3c4f69;
-  --tertiary-solid: #3c4f69;
-  --tertiary-surface: #f1f5f9;
-  --tertiary-chip: #e2e8f0;
-  --tertiary-border: #cbd5e1;
-  --tertiary-strong: #1e293b;
+  --tertiary: #6e6e73;
+  --tertiary-solid: #8e8e93;
+  --tertiary-surface: #f2f2f7;
+  --tertiary-chip: #f2f2f7;
+  --tertiary-border: #d2d2d7;
+  --tertiary-strong: #1d1d1f;
 
-  /* Charts (shadcn default, 6–10 tambahan) */
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --chart-6: #2563eb;
-  --chart-7: #16a34a;
-  /* was #9333ea — a purple twin of --primary. */
-  --chart-8: #0d9488;
-  --chart-9: #db2777;
-  --chart-10: #64748b;
+  --chart-1: #0071e3;
+  --chart-2: #34c759;
+  --chart-3: #ff9500;
+  --chart-4: #af52de;
+  --chart-5: #ff3b30;
+  --chart-6: #5ac8fa;
+  --chart-7: #ffcc00;
+  --chart-8: #ff2d55;
+  --chart-9: #64d2ff;
+  --chart-10: #8e8e93;
 
-  /* Sidebar */
-  --sidebar: #f8fafd;
-  --sidebar-foreground: #0a2540;
-  --sidebar-primary: #533afd;
+  /* Translucent material: the sidebar and top bar sit on the canvas. */
+  --sidebar: rgba(255, 255, 255, 0.72);
+  --sidebar-foreground: #1d1d1f;
+  --sidebar-primary: #0071e3;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f1eeff;
-  --sidebar-accent-foreground: #0a2540;
-  --sidebar-active: #533afd;
-  --sidebar-active-foreground: #ffffff;
-  --sidebar-border: #d4dcea;
-  --sidebar-ring: #533afd;
+  --sidebar-accent: #f2f2f7;
+  --sidebar-accent-foreground: #1d1d1f;
+  --sidebar-active: rgba(0, 113, 227, 0.1);
+  --sidebar-active-foreground: #0066cc;
+  --sidebar-border: #d2d2d7;
+  --sidebar-ring: #0071e3;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  /* The purple fill survives dark mode; only the label flips light. One token
-     serves both `bg-primary` and `text-primary`, and their contrast needs are
-     opposite — so `text-primary` on the dark canvas is the single accepted
-     sub-AA pairing. Flipping `--primary` light, as shadcn's default does, would
-     put a light label on a light fill. */
-  --primary: #533afd;
-  --primary-foreground: #fafafa;
-  --primary-hover: #4328d9;
-  --primary-active: #3620b0;
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  /* #533afd is only 3.2:1 on the dark canvas, so the ring brightens. */
-  --ring: #b4a7fe;
+  --background: #08080c;
+  --foreground: #ffffff;
+  --card: rgba(255, 255, 255, 0.04);
+  --card-foreground: #ffffff;
+  --popover: #15161f;
+  --popover-foreground: #ffffff;
+  --grouped: rgba(255, 255, 255, 0.03);
 
-  --brand-tint: oklch(0.269 0 0);
-  --brand-accent: #b4a7fe;
-  --margin: oklch(0.704 0.191 22.216);
+  --primary: #0a84ff;
+  --primary-foreground: #ffffff;
+  --primary-hover: #2494ff;
+  --primary-active: #0074e0;
 
-  /* A link must be legible on the canvas, where #533afd is only 3.2:1. */
-  --interactive: #b4a7fe;
-  --interactive-fill: #b4a7fe;
-  --interactive-border: #4c3fa8;
-  --interactive-surface: #1b1145;
+  --secondary: rgba(255, 255, 255, 0.06);
+  --secondary-foreground: #ffffff;
+  --muted: rgba(255, 255, 255, 0.06);
+  --muted-foreground: rgba(255, 255, 255, 0.6);
+  --accent: rgba(255, 255, 255, 0.08);
+  --accent-foreground: #ffffff;
 
-  --navy: oklch(0.1 0 0);
-  --navy-foreground: oklch(0.985 0 0);
-  --navy-muted: oklch(0.708 0 0);
-  --navy-border: oklch(1 0 0 / 10%);
-  --navy-accent: #b4a7fe;
-  --navy-info: #67e8f9;
-  --navy-success: #6ee7b7;
+  --border: rgba(255, 255, 255, 0.12);
+  --input: rgba(255, 255, 255, 0.16);
+  --ring: #0a84ff;
 
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-solid: #b91c1c;
-  --destructive-surface: #2a1215;
-  --destructive-chip: #450a0a;
-  --destructive-border: #7f1d1d;
-  --destructive-strong: #fecaca;
+  --brand-tint: rgba(255, 255, 255, 0.06);
+  --brand-accent: #0a84ff;
+  --margin: #ff453a;
 
-  --success: #6ee7b7;
-  --success-solid: #047857;
-  --success-surface: #052e22;
-  --success-chip: #064e3b;
-  --success-border: #065f46;
-  --success-strong: #a7f3d0;
+  --interactive: #64b5ff;
+  --interactive-fill: #0a84ff;
+  --interactive-border: rgba(10, 132, 255, 0.4);
+  --interactive-surface: rgba(10, 132, 255, 0.12);
 
-  --warning: #fcd34d;
-  --warning-solid: #b45309;
-  --warning-surface: #2b1d05;
-  --warning-chip: #451a03;
-  --warning-border: #78350f;
-  --warning-strong: #fde68a;
+  --navy: #0a0a0a;
+  --navy-foreground: #f5f5f7;
+  --navy-muted: #98989d;
+  --navy-border: rgba(255, 255, 255, 0.12);
+  --navy-accent: #0a84ff;
+  --navy-info: #64d2ff;
+  --navy-success: #30d158;
 
-  --caution: #fdba74;
-  --caution-solid: #c2410c;
-  --caution-surface: #2a1305;
-  --caution-chip: #431407;
-  --caution-border: #7c2d12;
-  --caution-strong: #fed7aa;
+  --destructive: #ff453a;
+  --destructive-solid: #ff453a;
+  --destructive-surface: rgba(255, 69, 58, 0.12);
+  --destructive-chip: rgba(255, 69, 58, 0.16);
+  --destructive-border: rgba(255, 69, 58, 0.32);
+  --destructive-strong: #ff8a80;
 
-  --info: #93c5fd;
-  --info-solid: #1d4ed8;
-  --info-surface: #0f1d3d;
-  --info-chip: #172554;
-  --info-border: #1e40af;
-  --info-strong: #bfdbfe;
+  --success: #30d158;
+  --success-solid: #30d158;
+  --success-surface: rgba(48, 209, 88, 0.12);
+  --success-chip: rgba(48, 209, 88, 0.16);
+  --success-border: rgba(48, 209, 88, 0.3);
+  --success-strong: #7ee2a0;
 
-  /* Mirror of the light deviation: the `sakit` chip is neutral slate, not the
-     violet that would read as a second primary. */
-  --tertiary: #94a3b8;
-  --tertiary-solid: #475569;
-  --tertiary-surface: #1e293b;
-  --tertiary-chip: #334155;
-  --tertiary-border: #475569;
-  --tertiary-strong: #e2e8f0;
+  --warning: #ff9f0a;
+  --warning-solid: #ff9f0a;
+  --warning-surface: rgba(255, 159, 10, 0.12);
+  --warning-chip: rgba(255, 159, 10, 0.16);
+  --warning-border: rgba(255, 159, 10, 0.3);
+  --warning-strong: #ffc470;
 
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --chart-6: #60a5fa;
-  --chart-7: #4ade80;
-  /* was #c084fc — a purple twin of --primary. */
-  --chart-8: #2dd4bf;
-  --chart-9: #f472b6;
-  --chart-10: #94a3b8;
+  --caution: #ff9f0a;
+  --caution-solid: #ff9f0a;
+  --caution-surface: rgba(255, 159, 10, 0.12);
+  --caution-chip: rgba(255, 159, 10, 0.16);
+  --caution-border: rgba(255, 159, 10, 0.3);
+  --caution-strong: #ffc470;
 
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: #533afd;
-  --sidebar-primary-foreground: #fafafa;
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-active: #533afd;
-  --sidebar-active-foreground: #fafafa;
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: #b4a7fe;
+  --info: #64d2ff;
+  --info-solid: #0a84ff;
+  --info-surface: rgba(100, 210, 255, 0.12);
+  --info-chip: rgba(100, 210, 255, 0.16);
+  --info-border: rgba(100, 210, 255, 0.3);
+  --info-strong: #a5e8ff;
+
+  --tertiary: rgba(255, 255, 255, 0.6);
+  --tertiary-solid: #8e8e93;
+  --tertiary-surface: rgba(255, 255, 255, 0.06);
+  --tertiary-chip: rgba(255, 255, 255, 0.08);
+  --tertiary-border: rgba(255, 255, 255, 0.12);
+  --tertiary-strong: #ffffff;
+
+  --chart-1: #0a84ff;
+  --chart-2: #30d158;
+  --chart-3: #ff9f0a;
+  --chart-4: #bf5af2;
+  --chart-5: #ff453a;
+  --chart-6: #64d2ff;
+  --chart-7: #ffd60a;
+  --chart-8: #ff375f;
+  --chart-9: #70d7ff;
+  --chart-10: #98989d;
+
+  --sidebar: rgba(255, 255, 255, 0.04);
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #0a84ff;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: rgba(255, 255, 255, 0.06);
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-active: rgba(10, 132, 255, 0.18);
+  --sidebar-active-foreground: #64b5ff;
+  --sidebar-border: rgba(255, 255, 255, 0.12);
+  --sidebar-ring: #0a84ff;
 }
 
 @layer base {
@@ -385,7 +355,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-background text-foreground font-sans antialiased;
   }
   /* Numeric columns line up wherever data is tabular. */
   th,
@@ -394,57 +364,36 @@
   [data-slot="table-head"] {
     font-variant-numeric: tabular-nums;
   }
-  /* Column headers: the body family, one weight up. */
   th {
     @apply font-semibold;
   }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply tracking-tight;
+  }
 }
 
 /*
- * The house style's one orchestrated moment, from the reference sign-in: the
- * screen assembles itself. Each element arrives from 30px below, out of an 8px
- * blur, over 800ms — stagger them in 100ms steps with `animate-delay-*`.
- *
- * Entry screens and the landing hero only. A dashboard that re-animates on
- * every navigation taxes the people who use it forty times a day.
+ * The one orchestrated moment: the sign-in and landing screens assemble from
+ * 30px below and an 8px blur over 600ms, staggered in 100ms steps. Dashboard
+ * screens never animate — they are visited dozens of times a day.
  */
 @utility animate-element {
-  animation: cascade-in 800ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: cascade-in 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @utility animate-aside {
-  animation: cascade-right 800ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: cascade-right 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @utility animate-card {
-  animation: cascade-card 800ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: cascade-card 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* `animate-delay-300` → 300ms. Any step works; the reference uses 100…1400. */
 @utility animate-delay-* {
   animation-delay: calc(--value(integer) * 1ms);
-}
-
-/*
- * The hero's gradient field. Two blurred washes drifting across a long cycle —
- * the only perpetual motion on the landing page, and it sits on a fixed,
- * pointer-events-none layer so it never repaints a scrolling container.
- */
-@utility animate-mesh {
-  animation: mesh-drift 26s ease-in-out infinite alternate;
-}
-
-@utility animate-mesh-slow {
-  animation: mesh-drift 34s ease-in-out infinite alternate-reverse;
-}
-
-@keyframes mesh-drift {
-  from {
-    transform: translate3d(-4%, -3%, 0) scale(1.04);
-  }
-  to {
-    transform: translate3d(4%, 4%, 0) scale(1.16);
-  }
 }
 
 @keyframes cascade-in {
@@ -486,13 +435,144 @@
   }
 }
 
+/* Liquid glass material — from the `@glass-ui` registry. The rim is a gradient
+   border-box under a padding-box wash, so no pseudo-elements are used. Classes
+   come from `liquidGlass()` in lib/liquid-glass/material.ts. */
+@layer components {
+  :root {
+    --lg-rim-hi: rgba(255, 255, 255, 0.8);
+    --lg-rim-lo: rgba(255, 255, 255, 0.18);
+    --lg-highlight: rgba(255, 255, 255, 0.6);
+    --lg-drop: rgba(15, 23, 42, 0.14);
+  }
+  .dark {
+    --lg-rim-hi: rgba(255, 255, 255, 0.34);
+    --lg-rim-lo: rgba(255, 255, 255, 0.06);
+    --lg-highlight: rgba(255, 255, 255, 0.16);
+    --lg-drop: rgba(0, 0, 0, 0.45);
+  }
+  .lg {
+    --lg-tint: transparent;
+    --lg-tint-amt: 0%;
+    --lg-wash: color-mix(
+      in oklab,
+      var(--lg-tint) var(--lg-tint-amt),
+      var(--lg-base)
+    );
+    color: var(--foreground);
+    border: 1px solid transparent;
+    background:
+      linear-gradient(var(--lg-wash), var(--lg-wash)) padding-box,
+      linear-gradient(
+          135deg,
+          var(--lg-rim-hi),
+          var(--lg-rim-lo) 35%,
+          var(--lg-rim-lo) 65%,
+          var(--lg-rim-hi)
+        )
+        border-box;
+    backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-sat));
+    -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(var(--lg-sat));
+    box-shadow:
+      inset 0 1px 0 var(--lg-highlight),
+      0 1px 2px var(--lg-drop),
+      0 12px 32px -14px var(--lg-drop);
+  }
+
+  .lg-regular {
+    --lg-base: rgba(255, 255, 255, 0.42);
+    --lg-blur: 16px;
+    --lg-sat: 180%;
+  }
+  .dark .lg-regular {
+    --lg-base: rgba(255, 255, 255, 0.06);
+    --lg-sat: 160%;
+  }
+  .lg-clear {
+    --lg-base: rgba(255, 255, 255, 0.1);
+    --lg-blur: 2px;
+    --lg-sat: 150%;
+  }
+  .dark .lg-clear {
+    --lg-base: rgba(255, 255, 255, 0.04);
+  }
+  .lg-tinted {
+    --lg-tint: var(--primary);
+    --lg-tint-amt: 55%;
+    --lg-base: rgba(255, 255, 255, 0.3);
+    --lg-blur: 12px;
+    --lg-sat: 180%;
+    color: var(--primary-foreground);
+  }
+  .dark .lg-tinted {
+    --lg-base: rgba(30, 32, 40, 0.35);
+  }
+
+  .lg-surface {
+    border-radius: 28px;
+  }
+  .lg-sheet {
+    border-radius: 34px;
+  }
+  .lg-bar,
+  .lg-control,
+  .lg-knob,
+  .lg-inline {
+    border-radius: 9999px;
+  }
+  .lg-inline {
+    box-shadow: inset 0 1px 0 var(--lg-highlight);
+  }
+  .lg-overlay {
+    border-radius: 20px;
+  }
+  .lg-overlay.lg-regular {
+    --lg-base: rgba(255, 255, 255, 0.72);
+    --lg-blur: 24px;
+  }
+  .dark .lg-overlay.lg-regular {
+    --lg-base: rgba(28, 30, 38, 0.74);
+  }
+
+  /* Nested glass must not re-blur the parent panel: without this, every inner
+     card compounds the backdrop and the stack turns milky. */
+  .lg .lg {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  /* The press animation: the capsule squashes instead of just dimming. */
+  .lg-control {
+    transition:
+      scale 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+      background 0.2s;
+  }
+  .lg-control:active:not(:disabled) {
+    scale: 1.04 0.96;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lg-control {
+      transition: none;
+    }
+    .lg-control:active:not(:disabled) {
+      scale: none;
+    }
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    .lg.lg {
+      --lg-base: color-mix(in oklab, var(--background) 94%, transparent);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
-    /* The cascade is staggered; a surviving delay would hold elements at their
-       invisible `from` state before snapping them in. */
     animation-delay: 0ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;

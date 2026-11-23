@@ -3,21 +3,12 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { type Metadata, type Viewport } from "next";
-import localFont from "next/font/local";
 
 import { ReactQueryProvider } from "@/app/providers";
 import { type ReactNode } from "react";
 
-const inter = localFont({
-  src: "./fonts/inter-latin-wght-normal.woff2",
-  weight: "100 900",
-  display: "swap",
-  variable: "--font-inter",
-  preload: true,
-});
-
 export const viewport: Viewport = {
-  themeColor: "#ffffff",
+  themeColor: "#08080C",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -42,8 +33,8 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="id" className={inter.variable} suppressHydrationWarning>
-      <body className={inter.className} suppressHydrationWarning>
+    <html lang="id" className="dark" suppressHydrationWarning>
+      <body className="bg-[#08080C] text-white" suppressHydrationWarning>
         <Toaster />
         <ReactQueryProvider>
           <TooltipProvider>{children}</TooltipProvider>

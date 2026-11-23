@@ -20,7 +20,7 @@ import Link from "next/link";
 
 export default function Unauthorized() {
   return (
-    <div className="bg-background flex min-h-[calc(100vh-80px)] items-center justify-center px-4 py-10">
+    <div className="flex min-h-[calc(100vh-80px)] items-center justify-center px-4 py-10">
       <div className="w-full max-w-4xl space-y-6">
         {/* Main Alert */}
         <Alert variant="destructive" className="border-destructive/50">

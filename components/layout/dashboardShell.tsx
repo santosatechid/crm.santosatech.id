@@ -2,8 +2,10 @@
 
 import { type ReactNode } from "react";
 
+import { GlassBackground } from "@/components/glass/background";
 import { AppSidebar } from "@/components/layout/appSidebar";
 import Footer from "@/components/layout/footer";
+import InstallButton from "@/components/layout/installButton";
 import {
   SidebarInset,
   SidebarProvider,
@@ -25,15 +27,17 @@ export default function DashboardShell({
 }: DashboardShellProps) {
   return (
     <SidebarProvider>
+      <GlassBackground />
       <AppSidebar userName={userName} workspaceName={workspaceName} role={role} />
-      <SidebarInset className="bg-background flex min-h-screen flex-col">
-        <header className="bg-background/95 supports-backdrop-filter:bg-background/60 border-border sticky flex shrink-0 items-center gap-2 border-b px-4 py-4 backdrop-blur md:px-6">
+      <SidebarInset className="flex min-h-screen flex-col bg-transparent">
+        <header className="sticky flex shrink-0 items-center gap-2 border-b border-white/10 bg-black/30 px-4 py-3 backdrop-blur-xl backdrop-saturate-150 md:px-6">
           <SidebarTrigger />
         </header>
         <main className="flex-1 overflow-auto">
-          <div className="mx-auto max-w-7xl space-y-6 p-4 md:p-6 lg:p-8">{children}</div>
+          <div className="mx-auto space-y-6 p-4 md:p-6 lg:p-8">{children}</div>
         </main>
         <Footer />
+        <InstallButton />
       </SidebarInset>
     </SidebarProvider>
   );
