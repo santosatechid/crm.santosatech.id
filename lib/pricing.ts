@@ -5,6 +5,7 @@ export type PlanSeed = {
   price: number;
   interval: string;
   features: string[];
+  maxUsers: number | null;
   isPopular: boolean;
 };
 
@@ -19,7 +20,8 @@ export const DEFAULT_PLANS: PlanSeed[] = [
     description: "Untuk mencoba alur auth dan dashboard.",
     price: 0,
     interval: "month",
-    features: ["1 pengguna", "BetterAuth (email + Google)", "Dashboard dasar"],
+    features: ["1 pengguna", "1 workspace", "Klien & tugas", "Invoice dasar"],
+    maxUsers: 1,
     isPopular: false,
   },
   {
@@ -30,10 +32,11 @@ export const DEFAULT_PLANS: PlanSeed[] = [
     interval: "month",
     features: [
       "10 pengguna",
-      "Role & branch",
-      "WhatsApp gateway",
-      "RabbitMQ queue",
+      "Kontak PIC & timeline",
+      "Invoice + pajak",
+      "Tanda tangan via link",
     ],
+    maxUsers: 10,
     isPopular: true,
   },
   {
@@ -45,9 +48,10 @@ export const DEFAULT_PLANS: PlanSeed[] = [
     features: [
       "Pengguna tanpa batas",
       "Semua fitur Pro",
-      "Bulk WhatsApp worker",
+      "Akses semua modul",
       "Prioritas dukungan",
     ],
+    maxUsers: null,
     isPopular: false,
   },
 ];

@@ -41,6 +41,11 @@ export default function SignUp() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  const nextTarget = (fallback: string) => {
+  if (typeof window === "undefined") return fallback;
+  return new URLSearchParams(window.location.search).get("next") ?? fallback;
+};
+
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -91,7 +96,7 @@ export default function SignUp() {
         password,
         name: `${firstName} ${lastName}`.trim(),
         image: base64Image,
-        callbackURL: "/dashboard",
+        callbackURL: nextTarget("/onboarding"),
         fetchOptions: {
           onRequest: () => setLoading(true),
           onResponse: () => setLoading(false),
@@ -104,7 +109,7 @@ export default function SignUp() {
           onSuccess: async () => {
             setLoading(false);
             toast.success("Akun berhasil dibuat! Mengarahkan...");
-            router.push("/dashboard");
+            router.push(nextTarget("/onboarding"));
           },
         },
       });
@@ -124,7 +129,7 @@ export default function SignUp() {
       await signIn.social(
         {
           provider: "google",
-          callbackURL: "/dashboard",
+          callbackURL: nextTarget("/onboarding"),
         },
         {
           onRequest: () => setLoading(true),

@@ -1,9 +1,8 @@
 import {
-  Building2,
+  CheckSquare,
+  FileText,
   LayoutDashboard,
-  MessageSquare,
   Settings,
-  Shield,
   User as UserIcon,
   Users,
 } from "lucide-react";
@@ -11,18 +10,20 @@ import { type ElementType } from "react";
 
 const iconMap: Record<string, ElementType> = {
   dashboard: LayoutDashboard,
-  users: Users,
-  roles: Shield,
-  branch: Building2,
+  clients: Users,
+  invoices: FileText,
+  tasks: CheckSquare,
   settings: Settings,
-  bot: MessageSquare,
   profile: UserIcon,
 };
+
+type Role = "OWNER" | "ADMIN" | "MEMBER";
 
 export type MenuItem = {
   title: string;
   url: string;
   icon?: keyof typeof iconMap;
+  roles?: Role[];
 };
 
 export type MenuGroup = {
@@ -33,36 +34,37 @@ export type MenuGroup = {
 export const menuGroups: MenuGroup[] = [
   {
     title: "Utama",
+    items: [{ title: "Dashboard", url: "/dashboard", icon: "dashboard" }],
+  },
+  {
+    title: "CRM",
+    items: [{ title: "Klien", url: "/dashboard/clients", icon: "clients" }],
+  },
+  {
+    title: "Penagihan",
     items: [
-      { title: "Dashboard", url: "/dashboard", icon: "dashboard" },
-      { title: "Profile", url: "/dashboard/profile", icon: "profile" },
+      {
+        title: "Invoice",
+        url: "/dashboard/invoices",
+        icon: "invoices",
+        roles: ["OWNER", "ADMIN"],
+      },
     ],
   },
   {
-    title: "Master Data",
+    title: "Pekerjaan",
+    items: [{ title: "Tugas", url: "/dashboard/tasks", icon: "tasks" }],
+  },
+  {
+    title: "Pengaturan",
     items: [
-      { title: "Users", url: "/dashboard/admin/master/users", icon: "users" },
-      { title: "Roles", url: "/dashboard/admin/master/roles", icon: "roles" },
       {
-        title: "Branches",
-        url: "/dashboard/admin/master/branches",
-        icon: "branch",
-      },
-      {
-        title: "BetterAuth",
-        url: "/dashboard/admin/master/betterAuth",
+        title: "Workspace & Tim",
+        url: "/dashboard/settings",
         icon: "settings",
+        roles: ["OWNER", "ADMIN"],
       },
-    ],
-  },
-  {
-    title: "Utilitas",
-    items: [
-      {
-        title: "WhatsApp",
-        url: "/dashboard/admin/utility/whatsapp",
-        icon: "bot",
-      },
+      { title: "Profil", url: "/dashboard/profile", icon: "profile" },
     ],
   },
 ];

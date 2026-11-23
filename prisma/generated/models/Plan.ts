@@ -28,10 +28,12 @@ export type AggregatePlan = {
 
 export type PlanAvgAggregateOutputType = {
   price: number | null
+  maxUsers: number | null
 }
 
 export type PlanSumAggregateOutputType = {
   price: number | null
+  maxUsers: number | null
 }
 
 export type PlanMinAggregateOutputType = {
@@ -41,6 +43,7 @@ export type PlanMinAggregateOutputType = {
   description: string | null
   price: number | null
   interval: string | null
+  maxUsers: number | null
   isPopular: boolean | null
   isActive: boolean | null
   createdAt: Date | null
@@ -54,6 +57,7 @@ export type PlanMaxAggregateOutputType = {
   description: string | null
   price: number | null
   interval: string | null
+  maxUsers: number | null
   isPopular: boolean | null
   isActive: boolean | null
   createdAt: Date | null
@@ -68,6 +72,7 @@ export type PlanCountAggregateOutputType = {
   price: number
   interval: number
   features: number
+  maxUsers: number
   isPopular: number
   isActive: number
   createdAt: number
@@ -78,10 +83,12 @@ export type PlanCountAggregateOutputType = {
 
 export type PlanAvgAggregateInputType = {
   price?: true
+  maxUsers?: true
 }
 
 export type PlanSumAggregateInputType = {
   price?: true
+  maxUsers?: true
 }
 
 export type PlanMinAggregateInputType = {
@@ -91,6 +98,7 @@ export type PlanMinAggregateInputType = {
   description?: true
   price?: true
   interval?: true
+  maxUsers?: true
   isPopular?: true
   isActive?: true
   createdAt?: true
@@ -104,6 +112,7 @@ export type PlanMaxAggregateInputType = {
   description?: true
   price?: true
   interval?: true
+  maxUsers?: true
   isPopular?: true
   isActive?: true
   createdAt?: true
@@ -118,6 +127,7 @@ export type PlanCountAggregateInputType = {
   price?: true
   interval?: true
   features?: true
+  maxUsers?: true
   isPopular?: true
   isActive?: true
   createdAt?: true
@@ -219,6 +229,7 @@ export type PlanGroupByOutputType = {
   price: number
   interval: string
   features: string[]
+  maxUsers: number | null
   isPopular: boolean
   isActive: boolean
   createdAt: Date
@@ -256,11 +267,11 @@ export type PlanWhereInput = {
   price?: Prisma.IntFilter<"Plan"> | number
   interval?: Prisma.StringFilter<"Plan"> | string
   features?: Prisma.StringNullableListFilter<"Plan">
+  maxUsers?: Prisma.IntNullableFilter<"Plan"> | number | null
   isPopular?: Prisma.BoolFilter<"Plan"> | boolean
   isActive?: Prisma.BoolFilter<"Plan"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Plan"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Plan"> | Date | string
-  memberships?: Prisma.MembershipListRelationFilter
 }
 
 export type PlanOrderByWithRelationInput = {
@@ -271,11 +282,11 @@ export type PlanOrderByWithRelationInput = {
   price?: Prisma.SortOrder
   interval?: Prisma.SortOrder
   features?: Prisma.SortOrder
+  maxUsers?: Prisma.SortOrderInput | Prisma.SortOrder
   isPopular?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  memberships?: Prisma.MembershipOrderByRelationAggregateInput
 }
 
 export type PlanWhereUniqueInput = Prisma.AtLeast<{
@@ -289,11 +300,11 @@ export type PlanWhereUniqueInput = Prisma.AtLeast<{
   price?: Prisma.IntFilter<"Plan"> | number
   interval?: Prisma.StringFilter<"Plan"> | string
   features?: Prisma.StringNullableListFilter<"Plan">
+  maxUsers?: Prisma.IntNullableFilter<"Plan"> | number | null
   isPopular?: Prisma.BoolFilter<"Plan"> | boolean
   isActive?: Prisma.BoolFilter<"Plan"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Plan"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Plan"> | Date | string
-  memberships?: Prisma.MembershipListRelationFilter
 }, "id" | "slug">
 
 export type PlanOrderByWithAggregationInput = {
@@ -304,6 +315,7 @@ export type PlanOrderByWithAggregationInput = {
   price?: Prisma.SortOrder
   interval?: Prisma.SortOrder
   features?: Prisma.SortOrder
+  maxUsers?: Prisma.SortOrderInput | Prisma.SortOrder
   isPopular?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -326,6 +338,7 @@ export type PlanScalarWhereWithAggregatesInput = {
   price?: Prisma.IntWithAggregatesFilter<"Plan"> | number
   interval?: Prisma.StringWithAggregatesFilter<"Plan"> | string
   features?: Prisma.StringNullableListFilter<"Plan">
+  maxUsers?: Prisma.IntNullableWithAggregatesFilter<"Plan"> | number | null
   isPopular?: Prisma.BoolWithAggregatesFilter<"Plan"> | boolean
   isActive?: Prisma.BoolWithAggregatesFilter<"Plan"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Plan"> | Date | string
@@ -340,11 +353,11 @@ export type PlanCreateInput = {
   price?: number
   interval?: string
   features?: Prisma.PlanCreatefeaturesInput | string[]
+  maxUsers?: number | null
   isPopular?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  memberships?: Prisma.MembershipCreateNestedManyWithoutPlanInput
 }
 
 export type PlanUncheckedCreateInput = {
@@ -355,11 +368,11 @@ export type PlanUncheckedCreateInput = {
   price?: number
   interval?: string
   features?: Prisma.PlanCreatefeaturesInput | string[]
+  maxUsers?: number | null
   isPopular?: boolean
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutPlanInput
 }
 
 export type PlanUpdateInput = {
@@ -370,11 +383,11 @@ export type PlanUpdateInput = {
   price?: Prisma.IntFieldUpdateOperationsInput | number
   interval?: Prisma.StringFieldUpdateOperationsInput | string
   features?: Prisma.PlanUpdatefeaturesInput | string[]
+  maxUsers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isPopular?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  memberships?: Prisma.MembershipUpdateManyWithoutPlanNestedInput
 }
 
 export type PlanUncheckedUpdateInput = {
@@ -385,11 +398,11 @@ export type PlanUncheckedUpdateInput = {
   price?: Prisma.IntFieldUpdateOperationsInput | number
   interval?: Prisma.StringFieldUpdateOperationsInput | string
   features?: Prisma.PlanUpdatefeaturesInput | string[]
+  maxUsers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isPopular?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutPlanNestedInput
 }
 
 export type PlanCreateManyInput = {
@@ -400,6 +413,7 @@ export type PlanCreateManyInput = {
   price?: number
   interval?: string
   features?: Prisma.PlanCreatefeaturesInput | string[]
+  maxUsers?: number | null
   isPopular?: boolean
   isActive?: boolean
   createdAt?: Date | string
@@ -414,6 +428,7 @@ export type PlanUpdateManyMutationInput = {
   price?: Prisma.IntFieldUpdateOperationsInput | number
   interval?: Prisma.StringFieldUpdateOperationsInput | string
   features?: Prisma.PlanUpdatefeaturesInput | string[]
+  maxUsers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isPopular?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -428,10 +443,19 @@ export type PlanUncheckedUpdateManyInput = {
   price?: Prisma.IntFieldUpdateOperationsInput | number
   interval?: Prisma.StringFieldUpdateOperationsInput | string
   features?: Prisma.PlanUpdatefeaturesInput | string[]
+  maxUsers?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isPopular?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type StringNullableListFilter<$PrismaModel = never> = {
+  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
+  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
+  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
 }
 
 export type PlanCountOrderByAggregateInput = {
@@ -442,6 +466,7 @@ export type PlanCountOrderByAggregateInput = {
   price?: Prisma.SortOrder
   interval?: Prisma.SortOrder
   features?: Prisma.SortOrder
+  maxUsers?: Prisma.SortOrder
   isPopular?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -450,6 +475,7 @@ export type PlanCountOrderByAggregateInput = {
 
 export type PlanAvgOrderByAggregateInput = {
   price?: Prisma.SortOrder
+  maxUsers?: Prisma.SortOrder
 }
 
 export type PlanMaxOrderByAggregateInput = {
@@ -459,6 +485,7 @@ export type PlanMaxOrderByAggregateInput = {
   description?: Prisma.SortOrder
   price?: Prisma.SortOrder
   interval?: Prisma.SortOrder
+  maxUsers?: Prisma.SortOrder
   isPopular?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -472,6 +499,7 @@ export type PlanMinOrderByAggregateInput = {
   description?: Prisma.SortOrder
   price?: Prisma.SortOrder
   interval?: Prisma.SortOrder
+  maxUsers?: Prisma.SortOrder
   isPopular?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -480,23 +508,11 @@ export type PlanMinOrderByAggregateInput = {
 
 export type PlanSumOrderByAggregateInput = {
   price?: Prisma.SortOrder
-}
-
-export type PlanScalarRelationFilter = {
-  is?: Prisma.PlanWhereInput
-  isNot?: Prisma.PlanWhereInput
+  maxUsers?: Prisma.SortOrder
 }
 
 export type PlanCreatefeaturesInput = {
   set: string[]
-}
-
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
 }
 
 export type PlanUpdatefeaturesInput = {
@@ -504,121 +520,14 @@ export type PlanUpdatefeaturesInput = {
   push?: string | string[]
 }
 
-export type PlanCreateNestedOneWithoutMembershipsInput = {
-  create?: Prisma.XOR<Prisma.PlanCreateWithoutMembershipsInput, Prisma.PlanUncheckedCreateWithoutMembershipsInput>
-  connectOrCreate?: Prisma.PlanCreateOrConnectWithoutMembershipsInput
-  connect?: Prisma.PlanWhereUniqueInput
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
-export type PlanUpdateOneRequiredWithoutMembershipsNestedInput = {
-  create?: Prisma.XOR<Prisma.PlanCreateWithoutMembershipsInput, Prisma.PlanUncheckedCreateWithoutMembershipsInput>
-  connectOrCreate?: Prisma.PlanCreateOrConnectWithoutMembershipsInput
-  upsert?: Prisma.PlanUpsertWithoutMembershipsInput
-  connect?: Prisma.PlanWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.PlanUpdateToOneWithWhereWithoutMembershipsInput, Prisma.PlanUpdateWithoutMembershipsInput>, Prisma.PlanUncheckedUpdateWithoutMembershipsInput>
-}
-
-export type PlanCreateWithoutMembershipsInput = {
-  id?: string
-  slug: string
-  name: string
-  description?: string | null
-  price?: number
-  interval?: string
-  features?: Prisma.PlanCreatefeaturesInput | string[]
-  isPopular?: boolean
-  isActive?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type PlanUncheckedCreateWithoutMembershipsInput = {
-  id?: string
-  slug: string
-  name: string
-  description?: string | null
-  price?: number
-  interval?: string
-  features?: Prisma.PlanCreatefeaturesInput | string[]
-  isPopular?: boolean
-  isActive?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type PlanCreateOrConnectWithoutMembershipsInput = {
-  where: Prisma.PlanWhereUniqueInput
-  create: Prisma.XOR<Prisma.PlanCreateWithoutMembershipsInput, Prisma.PlanUncheckedCreateWithoutMembershipsInput>
-}
-
-export type PlanUpsertWithoutMembershipsInput = {
-  update: Prisma.XOR<Prisma.PlanUpdateWithoutMembershipsInput, Prisma.PlanUncheckedUpdateWithoutMembershipsInput>
-  create: Prisma.XOR<Prisma.PlanCreateWithoutMembershipsInput, Prisma.PlanUncheckedCreateWithoutMembershipsInput>
-  where?: Prisma.PlanWhereInput
-}
-
-export type PlanUpdateToOneWithWhereWithoutMembershipsInput = {
-  where?: Prisma.PlanWhereInput
-  data: Prisma.XOR<Prisma.PlanUpdateWithoutMembershipsInput, Prisma.PlanUncheckedUpdateWithoutMembershipsInput>
-}
-
-export type PlanUpdateWithoutMembershipsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  price?: Prisma.IntFieldUpdateOperationsInput | number
-  interval?: Prisma.StringFieldUpdateOperationsInput | string
-  features?: Prisma.PlanUpdatefeaturesInput | string[]
-  isPopular?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type PlanUncheckedUpdateWithoutMembershipsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  slug?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  price?: Prisma.IntFieldUpdateOperationsInput | number
-  interval?: Prisma.StringFieldUpdateOperationsInput | string
-  features?: Prisma.PlanUpdatefeaturesInput | string[]
-  isPopular?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-
-/**
- * Count Type PlanCountOutputType
- */
-
-export type PlanCountOutputType = {
-  memberships: number
-}
-
-export type PlanCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  memberships?: boolean | PlanCountOutputTypeCountMembershipsArgs
-}
-
-/**
- * PlanCountOutputType without action
- */
-export type PlanCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the PlanCountOutputType
-   */
-  select?: Prisma.PlanCountOutputTypeSelect<ExtArgs> | null
-}
-
-/**
- * PlanCountOutputType without action
- */
-export type PlanCountOutputTypeCountMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.MembershipWhereInput
-}
 
 
 export type PlanSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -629,12 +538,11 @@ export type PlanSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   price?: boolean
   interval?: boolean
   features?: boolean
+  maxUsers?: boolean
   isPopular?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  memberships?: boolean | Prisma.Plan$membershipsArgs<ExtArgs>
-  _count?: boolean | Prisma.PlanCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["plan"]>
 
 export type PlanSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -645,6 +553,7 @@ export type PlanSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   price?: boolean
   interval?: boolean
   features?: boolean
+  maxUsers?: boolean
   isPopular?: boolean
   isActive?: boolean
   createdAt?: boolean
@@ -659,6 +568,7 @@ export type PlanSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   price?: boolean
   interval?: boolean
   features?: boolean
+  maxUsers?: boolean
   isPopular?: boolean
   isActive?: boolean
   createdAt?: boolean
@@ -673,25 +583,18 @@ export type PlanSelectScalar = {
   price?: boolean
   interval?: boolean
   features?: boolean
+  maxUsers?: boolean
   isPopular?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type PlanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "name" | "description" | "price" | "interval" | "features" | "isPopular" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["plan"]>
-export type PlanInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  memberships?: boolean | Prisma.Plan$membershipsArgs<ExtArgs>
-  _count?: boolean | Prisma.PlanCountOutputTypeDefaultArgs<ExtArgs>
-}
-export type PlanIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type PlanIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type PlanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "name" | "description" | "price" | "interval" | "features" | "maxUsers" | "isPopular" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["plan"]>
 
 export type $PlanPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Plan"
-  objects: {
-    memberships: Prisma.$MembershipPayload<ExtArgs>[]
-  }
+  objects: {}
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     slug: string
@@ -700,6 +603,7 @@ export type $PlanPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     price: number
     interval: string
     features: string[]
+    maxUsers: number | null
     isPopular: boolean
     isActive: boolean
     createdAt: Date
@@ -1098,7 +1002,6 @@ readonly fields: PlanFieldRefs;
  */
 export interface Prisma__PlanClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  memberships<T extends Prisma.Plan$membershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Plan$membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1135,6 +1038,7 @@ export interface PlanFieldRefs {
   readonly price: Prisma.FieldRef<"Plan", 'Int'>
   readonly interval: Prisma.FieldRef<"Plan", 'String'>
   readonly features: Prisma.FieldRef<"Plan", 'String[]'>
+  readonly maxUsers: Prisma.FieldRef<"Plan", 'Int'>
   readonly isPopular: Prisma.FieldRef<"Plan", 'Boolean'>
   readonly isActive: Prisma.FieldRef<"Plan", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Plan", 'DateTime'>
@@ -1156,10 +1060,6 @@ export type PlanFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Internal
    */
   omit?: Prisma.PlanOmit<ExtArgs> | null
   /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PlanInclude<ExtArgs> | null
-  /**
    * Filter, which Plan to fetch.
    */
   where: Prisma.PlanWhereUniqueInput
@@ -1178,10 +1078,6 @@ export type PlanFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.PlanOmit<ExtArgs> | null
   /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PlanInclude<ExtArgs> | null
-  /**
    * Filter, which Plan to fetch.
    */
   where: Prisma.PlanWhereUniqueInput
@@ -1199,10 +1095,6 @@ export type PlanFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Omit specific fields from the Plan
    */
   omit?: Prisma.PlanOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PlanInclude<ExtArgs> | null
   /**
    * Filter, which Plan to fetch.
    */
@@ -1252,10 +1144,6 @@ export type PlanFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.In
    */
   omit?: Prisma.PlanOmit<ExtArgs> | null
   /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PlanInclude<ExtArgs> | null
-  /**
    * Filter, which Plan to fetch.
    */
   where?: Prisma.PlanWhereInput
@@ -1303,10 +1191,6 @@ export type PlanFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    * Omit specific fields from the Plan
    */
   omit?: Prisma.PlanOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PlanInclude<ExtArgs> | null
   /**
    * Filter, which Plans to fetch.
    */
@@ -1356,10 +1240,6 @@ export type PlanCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    */
   omit?: Prisma.PlanOmit<ExtArgs> | null
   /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PlanInclude<ExtArgs> | null
-  /**
    * The data needed to create a Plan.
    */
   data: Prisma.XOR<Prisma.PlanCreateInput, Prisma.PlanUncheckedCreateInput>
@@ -1407,10 +1287,6 @@ export type PlanUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    * Omit specific fields from the Plan
    */
   omit?: Prisma.PlanOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PlanInclude<ExtArgs> | null
   /**
    * The data needed to update a Plan.
    */
@@ -1478,10 +1354,6 @@ export type PlanUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    */
   omit?: Prisma.PlanOmit<ExtArgs> | null
   /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PlanInclude<ExtArgs> | null
-  /**
    * The filter to search for the Plan to update in case it exists.
    */
   where: Prisma.PlanWhereUniqueInput
@@ -1508,10 +1380,6 @@ export type PlanDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    */
   omit?: Prisma.PlanOmit<ExtArgs> | null
   /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PlanInclude<ExtArgs> | null
-  /**
    * Filter which Plan to delete.
    */
   where: Prisma.PlanWhereUniqueInput
@@ -1532,30 +1400,6 @@ export type PlanDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
- * Plan.memberships
- */
-export type Plan$membershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Membership
-   */
-  select?: Prisma.MembershipSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Membership
-   */
-  omit?: Prisma.MembershipOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.MembershipInclude<ExtArgs> | null
-  where?: Prisma.MembershipWhereInput
-  orderBy?: Prisma.MembershipOrderByWithRelationInput | Prisma.MembershipOrderByWithRelationInput[]
-  cursor?: Prisma.MembershipWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.MembershipScalarFieldEnum | Prisma.MembershipScalarFieldEnum[]
-}
-
-/**
  * Plan without action
  */
 export type PlanDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1567,8 +1411,4 @@ export type PlanDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * Omit specific fields from the Plan
    */
   omit?: Prisma.PlanOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PlanInclude<ExtArgs> | null
 }

@@ -1,9 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { toast } from "sonner";
 
+import { createWorkspace } from "@/app/actions/workspace";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -15,8 +16,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { getErrorMessage } from "@/types";
-import { useCreateClient } from "@/hooks/clients/useClients";
 
 export default function OnboardingForm({
   defaultName,
@@ -26,9 +25,9 @@ export default function OnboardingForm({
   defaultEmail: string;
 }) {
   const router = useRouter();
-  const createClient = useCreateClient();
+  const [pending, startTransition] = useTransition();
   const [form, setForm] = useState({
-    name: defaultName ? `${defaultName}'s Workspace` : "",
+    name: defaultName ? `Kantor ${defaultName}` : "",
     email: defaultEmail,
     phone: "",
     address: "",
@@ -37,80 +36,69 @@ export default function OnboardingForm({
   const update = (patch: Partial<typeof form>) =>
     setForm((current) => ({ ...current, ...patch }));
 
-  const handleSubmit = async (event: React.FormEvent) => {
+  const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    if (form.name.trim().length < 2) {
-      toast.error("Nama client minimal 2 karakter.");
-      return;
-    }
-
-    try {
-      await createClient.mutateAsync(form);
-      toast.success("Client berhasil dibuat.");
-      router.replace("/dashboard");
+    startTransition(async () => {
+      const result = await createWorkspace(form);
+      if (!result.ok) {
+        toast.error(result.message);
+        return;
+      }
+      toast.success(result.message);
+      router.push("/dashboard");
       router.refresh();
-    } catch (error) {
-      toast.error(getErrorMessage(error));
-    }
+    });
   };
 
   return (
     <Card className="w-full max-w-lg">
       <CardHeader>
-        <CardTitle>Buat client</CardTitle>
+        <CardTitle>Buat workspace kantor</CardTitle>
         <CardDescription>
-          Satu akun memiliki satu client. Data role, branch, dan user akan
-          berada di bawah client ini.
+          Workspace adalah ruang kerja satu kantor. Data klien, invoice, dan tugas
+          tersimpan di dalamnya.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="client-name">Nama client</Label>
+            <Label htmlFor="name">Nama kantor</Label>
             <Input
-              id="client-name"
+              id="name"
               value={form.name}
               onChange={(event) => update({ name: event.target.value })}
-              placeholder="PT Contoh Indonesia"
+              placeholder="Contoh: Santosa Studio"
+              required
             />
           </div>
-
           <div className="space-y-2">
-            <Label htmlFor="client-email">Email</Label>
+            <Label htmlFor="email">Email kantor</Label>
             <Input
-              id="client-email"
+              id="email"
               type="email"
               value={form.email}
               onChange={(event) => update({ email: event.target.value })}
             />
           </div>
-
           <div className="space-y-2">
-            <Label htmlFor="client-phone">Telepon</Label>
+            <Label htmlFor="phone">Telepon</Label>
             <Input
-              id="client-phone"
+              id="phone"
               value={form.phone}
               onChange={(event) => update({ phone: event.target.value })}
-              placeholder="08xxxxxxxxxx"
             />
           </div>
-
           <div className="space-y-2">
-            <Label htmlFor="client-address">Alamat</Label>
+            <Label htmlFor="address">Alamat</Label>
             <Textarea
-              id="client-address"
+              id="address"
               value={form.address}
               onChange={(event) => update({ address: event.target.value })}
-              placeholder="Alamat opsional"
+              rows={3}
             />
           </div>
-
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={createClient.isPending}
-          >
-            {createClient.isPending ? "Membuat client..." : "Buat client"}
+          <Button type="submit" className="w-full" disabled={pending}>
+            {pending ? "Membuat workspace..." : "Buat workspace"}
           </Button>
         </form>
       </CardContent>

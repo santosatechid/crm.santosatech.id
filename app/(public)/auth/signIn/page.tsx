@@ -28,6 +28,11 @@ export default function SignIn() {
   const [rememberMe, setRememberMe] = useState(false);
   const router = useRouter();
 
+  const nextTarget = (fallback: string) => {
+  if (typeof window === "undefined") return fallback;
+  return new URLSearchParams(window.location.search).get("next") ?? fallback;
+};
+
   const handleEmailSignIn = async (e: FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
@@ -41,7 +46,7 @@ export default function SignIn() {
         {
           email,
           password,
-          callbackURL: "/dashboard",
+          callbackURL: nextTarget("/dashboard"),
           rememberMe,
         },
         {
@@ -57,7 +62,7 @@ export default function SignIn() {
           onSuccess: () => {
             setLoading(false);
             toast.success("Berhasil masuk! Mengarahkan ke dasbor...");
-            router.push("/dashboard");
+            router.push(nextTarget("/dashboard"));
           },
         },
       );
@@ -75,7 +80,7 @@ export default function SignIn() {
       await signIn.social(
         {
           provider: "google",
-          callbackURL: "/dashboard",
+          callbackURL: nextTarget("/dashboard"),
         },
         {
           onRequest: () => setLoading(true),
@@ -180,6 +185,10 @@ export default function SignIn() {
             )}
           </Button>
         </form>
+
+        <div className="text-right">
+          <EntryLink href="/auth/forgotPassword">Lupa kata sandi?</EntryLink>
+        </div>
 
         <EntryDivider label="atau lanjut dengan" />
 

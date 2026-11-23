@@ -38,42 +38,72 @@ export type Account = Prisma.AccountModel
  */
 export type Verification = Prisma.VerificationModel
 /**
- * Model UserData
+ * Model Workspace
  * 
  */
-export type UserData = Prisma.UserDataModel
-/**
- * Model Role
- * 
- */
-export type Role = Prisma.RoleModel
-/**
- * Model Branch
- * 
- */
-export type Branch = Prisma.BranchModel
-/**
- * Model Notification
- * 
- */
-export type Notification = Prisma.NotificationModel
-/**
- * Model Announcement
- * 
- */
-export type Announcement = Prisma.AnnouncementModel
-/**
- * Model Plan
- * 
- */
-export type Plan = Prisma.PlanModel
+export type Workspace = Prisma.WorkspaceModel
 /**
  * Model Membership
  * 
  */
 export type Membership = Prisma.MembershipModel
 /**
+ * Model WorkspaceInvite
+ * 
+ */
+export type WorkspaceInvite = Prisma.WorkspaceInviteModel
+/**
  * Model Client
  * 
  */
 export type Client = Prisma.ClientModel
+/**
+ * Model Contact
+ * 
+ */
+export type Contact = Prisma.ContactModel
+/**
+ * Model ClientNote
+ * 
+ */
+export type ClientNote = Prisma.ClientNoteModel
+/**
+ * Model Invoice
+ * 
+ */
+export type Invoice = Prisma.InvoiceModel
+/**
+ * Model InvoiceItem
+ * 
+ */
+export type InvoiceItem = Prisma.InvoiceItemModel
+/**
+ * Model Payment
+ * 
+ */
+export type Payment = Prisma.PaymentModel
+/**
+ * Model SignatureRequest
+ * 
+ */
+export type SignatureRequest = Prisma.SignatureRequestModel
+/**
+ * Model Task
+ * 
+ */
+export type Task = Prisma.TaskModel
+/**
+ * Model TaskComment
+ * 
+ */
+export type TaskComment = Prisma.TaskCommentModel
+/**
+ * Model ActivityLog
+ * 
+ */
+export type ActivityLog = Prisma.ActivityLogModel
+/**
+ * Model Plan
+ * 
+ */
+export type Plan = Prisma.PlanModel

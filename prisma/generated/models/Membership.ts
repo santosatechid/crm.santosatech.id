@@ -27,10 +27,8 @@ export type AggregateMembership = {
 export type MembershipMinAggregateOutputType = {
   id: string | null
   userId: string | null
-  planId: string | null
-  status: string | null
-  startDate: Date | null
-  endDate: Date | null
+  workspaceId: string | null
+  role: $Enums.WorkspaceRole | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -38,10 +36,8 @@ export type MembershipMinAggregateOutputType = {
 export type MembershipMaxAggregateOutputType = {
   id: string | null
   userId: string | null
-  planId: string | null
-  status: string | null
-  startDate: Date | null
-  endDate: Date | null
+  workspaceId: string | null
+  role: $Enums.WorkspaceRole | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -49,10 +45,8 @@ export type MembershipMaxAggregateOutputType = {
 export type MembershipCountAggregateOutputType = {
   id: number
   userId: number
-  planId: number
-  status: number
-  startDate: number
-  endDate: number
+  workspaceId: number
+  role: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -62,10 +56,8 @@ export type MembershipCountAggregateOutputType = {
 export type MembershipMinAggregateInputType = {
   id?: true
   userId?: true
-  planId?: true
-  status?: true
-  startDate?: true
-  endDate?: true
+  workspaceId?: true
+  role?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -73,10 +65,8 @@ export type MembershipMinAggregateInputType = {
 export type MembershipMaxAggregateInputType = {
   id?: true
   userId?: true
-  planId?: true
-  status?: true
-  startDate?: true
-  endDate?: true
+  workspaceId?: true
+  role?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -84,10 +74,8 @@ export type MembershipMaxAggregateInputType = {
 export type MembershipCountAggregateInputType = {
   id?: true
   userId?: true
-  planId?: true
-  status?: true
-  startDate?: true
-  endDate?: true
+  workspaceId?: true
+  role?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -168,10 +156,8 @@ export type MembershipGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 export type MembershipGroupByOutputType = {
   id: string
   userId: string
-  planId: string
-  status: string
-  startDate: Date
-  endDate: Date | null
+  workspaceId: string
+  role: $Enums.WorkspaceRole
   createdAt: Date
   updatedAt: Date
   _count: MembershipCountAggregateOutputType | null
@@ -200,52 +186,45 @@ export type MembershipWhereInput = {
   NOT?: Prisma.MembershipWhereInput | Prisma.MembershipWhereInput[]
   id?: Prisma.StringFilter<"Membership"> | string
   userId?: Prisma.StringFilter<"Membership"> | string
-  planId?: Prisma.StringFilter<"Membership"> | string
-  status?: Prisma.StringFilter<"Membership"> | string
-  startDate?: Prisma.DateTimeFilter<"Membership"> | Date | string
-  endDate?: Prisma.DateTimeNullableFilter<"Membership"> | Date | string | null
+  workspaceId?: Prisma.StringFilter<"Membership"> | string
+  role?: Prisma.EnumWorkspaceRoleFilter<"Membership"> | $Enums.WorkspaceRole
   createdAt?: Prisma.DateTimeFilter<"Membership"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Membership"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  plan?: Prisma.XOR<Prisma.PlanScalarRelationFilter, Prisma.PlanWhereInput>
+  workspace?: Prisma.XOR<Prisma.WorkspaceScalarRelationFilter, Prisma.WorkspaceWhereInput>
 }
 
 export type MembershipOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  planId?: Prisma.SortOrder
-  status?: Prisma.SortOrder
-  startDate?: Prisma.SortOrder
-  endDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  workspaceId?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
-  plan?: Prisma.PlanOrderByWithRelationInput
+  workspace?: Prisma.WorkspaceOrderByWithRelationInput
 }
 
 export type MembershipWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  userId?: string
+  workspaceId_userId?: Prisma.MembershipWorkspaceIdUserIdCompoundUniqueInput
   AND?: Prisma.MembershipWhereInput | Prisma.MembershipWhereInput[]
   OR?: Prisma.MembershipWhereInput[]
   NOT?: Prisma.MembershipWhereInput | Prisma.MembershipWhereInput[]
-  planId?: Prisma.StringFilter<"Membership"> | string
-  status?: Prisma.StringFilter<"Membership"> | string
-  startDate?: Prisma.DateTimeFilter<"Membership"> | Date | string
-  endDate?: Prisma.DateTimeNullableFilter<"Membership"> | Date | string | null
+  userId?: Prisma.StringFilter<"Membership"> | string
+  workspaceId?: Prisma.StringFilter<"Membership"> | string
+  role?: Prisma.EnumWorkspaceRoleFilter<"Membership"> | $Enums.WorkspaceRole
   createdAt?: Prisma.DateTimeFilter<"Membership"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Membership"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  plan?: Prisma.XOR<Prisma.PlanScalarRelationFilter, Prisma.PlanWhereInput>
-}, "id" | "userId">
+  workspace?: Prisma.XOR<Prisma.WorkspaceScalarRelationFilter, Prisma.WorkspaceWhereInput>
+}, "id" | "workspaceId_userId">
 
 export type MembershipOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  planId?: Prisma.SortOrder
-  status?: Prisma.SortOrder
-  startDate?: Prisma.SortOrder
-  endDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  workspaceId?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.MembershipCountOrderByAggregateInput
@@ -259,54 +238,44 @@ export type MembershipScalarWhereWithAggregatesInput = {
   NOT?: Prisma.MembershipScalarWhereWithAggregatesInput | Prisma.MembershipScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Membership"> | string
   userId?: Prisma.StringWithAggregatesFilter<"Membership"> | string
-  planId?: Prisma.StringWithAggregatesFilter<"Membership"> | string
-  status?: Prisma.StringWithAggregatesFilter<"Membership"> | string
-  startDate?: Prisma.DateTimeWithAggregatesFilter<"Membership"> | Date | string
-  endDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Membership"> | Date | string | null
+  workspaceId?: Prisma.StringWithAggregatesFilter<"Membership"> | string
+  role?: Prisma.EnumWorkspaceRoleWithAggregatesFilter<"Membership"> | $Enums.WorkspaceRole
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Membership"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Membership"> | Date | string
 }
 
 export type MembershipCreateInput = {
   id?: string
-  status?: string
-  startDate?: Date | string
-  endDate?: Date | string | null
+  role?: $Enums.WorkspaceRole
   createdAt?: Date | string
   updatedAt?: Date | string
-  user: Prisma.UserCreateNestedOneWithoutMembershipInput
-  plan: Prisma.PlanCreateNestedOneWithoutMembershipsInput
+  user: Prisma.UserCreateNestedOneWithoutMembershipsInput
+  workspace: Prisma.WorkspaceCreateNestedOneWithoutMembershipsInput
 }
 
 export type MembershipUncheckedCreateInput = {
   id?: string
   userId: string
-  planId: string
-  status?: string
-  startDate?: Date | string
-  endDate?: Date | string | null
+  workspaceId: string
+  role?: $Enums.WorkspaceRole
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type MembershipUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  role?: Prisma.EnumWorkspaceRoleFieldUpdateOperationsInput | $Enums.WorkspaceRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.UserUpdateOneRequiredWithoutMembershipNestedInput
-  plan?: Prisma.PlanUpdateOneRequiredWithoutMembershipsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutMembershipsNestedInput
+  workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutMembershipsNestedInput
 }
 
 export type MembershipUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  planId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumWorkspaceRoleFieldUpdateOperationsInput | $Enums.WorkspaceRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -314,19 +283,15 @@ export type MembershipUncheckedUpdateInput = {
 export type MembershipCreateManyInput = {
   id?: string
   userId: string
-  planId: string
-  status?: string
-  startDate?: Date | string
-  endDate?: Date | string | null
+  workspaceId: string
+  role?: $Enums.WorkspaceRole
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type MembershipUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  role?: Prisma.EnumWorkspaceRoleFieldUpdateOperationsInput | $Enums.WorkspaceRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -334,17 +299,10 @@ export type MembershipUpdateManyMutationInput = {
 export type MembershipUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  planId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumWorkspaceRoleFieldUpdateOperationsInput | $Enums.WorkspaceRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type MembershipNullableScalarRelationFilter = {
-  is?: Prisma.MembershipWhereInput | null
-  isNot?: Prisma.MembershipWhereInput | null
 }
 
 export type MembershipListRelationFilter = {
@@ -357,13 +315,16 @@ export type MembershipOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type MembershipWorkspaceIdUserIdCompoundUniqueInput = {
+  workspaceId: string
+  userId: string
+}
+
 export type MembershipCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  planId?: Prisma.SortOrder
-  status?: Prisma.SortOrder
-  startDate?: Prisma.SortOrder
-  endDate?: Prisma.SortOrder
+  workspaceId?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -371,10 +332,8 @@ export type MembershipCountOrderByAggregateInput = {
 export type MembershipMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  planId?: Prisma.SortOrder
-  status?: Prisma.SortOrder
-  startDate?: Prisma.SortOrder
-  endDate?: Prisma.SortOrder
+  workspaceId?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -382,104 +341,112 @@ export type MembershipMaxOrderByAggregateInput = {
 export type MembershipMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  planId?: Prisma.SortOrder
-  status?: Prisma.SortOrder
-  startDate?: Prisma.SortOrder
-  endDate?: Prisma.SortOrder
+  workspaceId?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
-export type MembershipCreateNestedOneWithoutUserInput = {
-  create?: Prisma.XOR<Prisma.MembershipCreateWithoutUserInput, Prisma.MembershipUncheckedCreateWithoutUserInput>
-  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutUserInput
-  connect?: Prisma.MembershipWhereUniqueInput
-}
-
-export type MembershipUncheckedCreateNestedOneWithoutUserInput = {
-  create?: Prisma.XOR<Prisma.MembershipCreateWithoutUserInput, Prisma.MembershipUncheckedCreateWithoutUserInput>
-  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutUserInput
-  connect?: Prisma.MembershipWhereUniqueInput
-}
-
-export type MembershipUpdateOneWithoutUserNestedInput = {
-  create?: Prisma.XOR<Prisma.MembershipCreateWithoutUserInput, Prisma.MembershipUncheckedCreateWithoutUserInput>
-  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutUserInput
-  upsert?: Prisma.MembershipUpsertWithoutUserInput
-  disconnect?: Prisma.MembershipWhereInput | boolean
-  delete?: Prisma.MembershipWhereInput | boolean
-  connect?: Prisma.MembershipWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.MembershipUpdateToOneWithWhereWithoutUserInput, Prisma.MembershipUpdateWithoutUserInput>, Prisma.MembershipUncheckedUpdateWithoutUserInput>
-}
-
-export type MembershipUncheckedUpdateOneWithoutUserNestedInput = {
-  create?: Prisma.XOR<Prisma.MembershipCreateWithoutUserInput, Prisma.MembershipUncheckedCreateWithoutUserInput>
-  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutUserInput
-  upsert?: Prisma.MembershipUpsertWithoutUserInput
-  disconnect?: Prisma.MembershipWhereInput | boolean
-  delete?: Prisma.MembershipWhereInput | boolean
-  connect?: Prisma.MembershipWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.MembershipUpdateToOneWithWhereWithoutUserInput, Prisma.MembershipUpdateWithoutUserInput>, Prisma.MembershipUncheckedUpdateWithoutUserInput>
-}
-
-export type MembershipCreateNestedManyWithoutPlanInput = {
-  create?: Prisma.XOR<Prisma.MembershipCreateWithoutPlanInput, Prisma.MembershipUncheckedCreateWithoutPlanInput> | Prisma.MembershipCreateWithoutPlanInput[] | Prisma.MembershipUncheckedCreateWithoutPlanInput[]
-  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutPlanInput | Prisma.MembershipCreateOrConnectWithoutPlanInput[]
-  createMany?: Prisma.MembershipCreateManyPlanInputEnvelope
+export type MembershipCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.MembershipCreateWithoutUserInput, Prisma.MembershipUncheckedCreateWithoutUserInput> | Prisma.MembershipCreateWithoutUserInput[] | Prisma.MembershipUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutUserInput | Prisma.MembershipCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.MembershipCreateManyUserInputEnvelope
   connect?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
 }
 
-export type MembershipUncheckedCreateNestedManyWithoutPlanInput = {
-  create?: Prisma.XOR<Prisma.MembershipCreateWithoutPlanInput, Prisma.MembershipUncheckedCreateWithoutPlanInput> | Prisma.MembershipCreateWithoutPlanInput[] | Prisma.MembershipUncheckedCreateWithoutPlanInput[]
-  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutPlanInput | Prisma.MembershipCreateOrConnectWithoutPlanInput[]
-  createMany?: Prisma.MembershipCreateManyPlanInputEnvelope
+export type MembershipUncheckedCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.MembershipCreateWithoutUserInput, Prisma.MembershipUncheckedCreateWithoutUserInput> | Prisma.MembershipCreateWithoutUserInput[] | Prisma.MembershipUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutUserInput | Prisma.MembershipCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.MembershipCreateManyUserInputEnvelope
   connect?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
 }
 
-export type MembershipUpdateManyWithoutPlanNestedInput = {
-  create?: Prisma.XOR<Prisma.MembershipCreateWithoutPlanInput, Prisma.MembershipUncheckedCreateWithoutPlanInput> | Prisma.MembershipCreateWithoutPlanInput[] | Prisma.MembershipUncheckedCreateWithoutPlanInput[]
-  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutPlanInput | Prisma.MembershipCreateOrConnectWithoutPlanInput[]
-  upsert?: Prisma.MembershipUpsertWithWhereUniqueWithoutPlanInput | Prisma.MembershipUpsertWithWhereUniqueWithoutPlanInput[]
-  createMany?: Prisma.MembershipCreateManyPlanInputEnvelope
+export type MembershipUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.MembershipCreateWithoutUserInput, Prisma.MembershipUncheckedCreateWithoutUserInput> | Prisma.MembershipCreateWithoutUserInput[] | Prisma.MembershipUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutUserInput | Prisma.MembershipCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.MembershipUpsertWithWhereUniqueWithoutUserInput | Prisma.MembershipUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.MembershipCreateManyUserInputEnvelope
   set?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
   disconnect?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
   delete?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
   connect?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
-  update?: Prisma.MembershipUpdateWithWhereUniqueWithoutPlanInput | Prisma.MembershipUpdateWithWhereUniqueWithoutPlanInput[]
-  updateMany?: Prisma.MembershipUpdateManyWithWhereWithoutPlanInput | Prisma.MembershipUpdateManyWithWhereWithoutPlanInput[]
+  update?: Prisma.MembershipUpdateWithWhereUniqueWithoutUserInput | Prisma.MembershipUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.MembershipUpdateManyWithWhereWithoutUserInput | Prisma.MembershipUpdateManyWithWhereWithoutUserInput[]
   deleteMany?: Prisma.MembershipScalarWhereInput | Prisma.MembershipScalarWhereInput[]
 }
 
-export type MembershipUncheckedUpdateManyWithoutPlanNestedInput = {
-  create?: Prisma.XOR<Prisma.MembershipCreateWithoutPlanInput, Prisma.MembershipUncheckedCreateWithoutPlanInput> | Prisma.MembershipCreateWithoutPlanInput[] | Prisma.MembershipUncheckedCreateWithoutPlanInput[]
-  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutPlanInput | Prisma.MembershipCreateOrConnectWithoutPlanInput[]
-  upsert?: Prisma.MembershipUpsertWithWhereUniqueWithoutPlanInput | Prisma.MembershipUpsertWithWhereUniqueWithoutPlanInput[]
-  createMany?: Prisma.MembershipCreateManyPlanInputEnvelope
+export type MembershipUncheckedUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.MembershipCreateWithoutUserInput, Prisma.MembershipUncheckedCreateWithoutUserInput> | Prisma.MembershipCreateWithoutUserInput[] | Prisma.MembershipUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutUserInput | Prisma.MembershipCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.MembershipUpsertWithWhereUniqueWithoutUserInput | Prisma.MembershipUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.MembershipCreateManyUserInputEnvelope
   set?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
   disconnect?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
   delete?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
   connect?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
-  update?: Prisma.MembershipUpdateWithWhereUniqueWithoutPlanInput | Prisma.MembershipUpdateWithWhereUniqueWithoutPlanInput[]
-  updateMany?: Prisma.MembershipUpdateManyWithWhereWithoutPlanInput | Prisma.MembershipUpdateManyWithWhereWithoutPlanInput[]
+  update?: Prisma.MembershipUpdateWithWhereUniqueWithoutUserInput | Prisma.MembershipUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.MembershipUpdateManyWithWhereWithoutUserInput | Prisma.MembershipUpdateManyWithWhereWithoutUserInput[]
   deleteMany?: Prisma.MembershipScalarWhereInput | Prisma.MembershipScalarWhereInput[]
+}
+
+export type MembershipCreateNestedManyWithoutWorkspaceInput = {
+  create?: Prisma.XOR<Prisma.MembershipCreateWithoutWorkspaceInput, Prisma.MembershipUncheckedCreateWithoutWorkspaceInput> | Prisma.MembershipCreateWithoutWorkspaceInput[] | Prisma.MembershipUncheckedCreateWithoutWorkspaceInput[]
+  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutWorkspaceInput | Prisma.MembershipCreateOrConnectWithoutWorkspaceInput[]
+  createMany?: Prisma.MembershipCreateManyWorkspaceInputEnvelope
+  connect?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
+}
+
+export type MembershipUncheckedCreateNestedManyWithoutWorkspaceInput = {
+  create?: Prisma.XOR<Prisma.MembershipCreateWithoutWorkspaceInput, Prisma.MembershipUncheckedCreateWithoutWorkspaceInput> | Prisma.MembershipCreateWithoutWorkspaceInput[] | Prisma.MembershipUncheckedCreateWithoutWorkspaceInput[]
+  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutWorkspaceInput | Prisma.MembershipCreateOrConnectWithoutWorkspaceInput[]
+  createMany?: Prisma.MembershipCreateManyWorkspaceInputEnvelope
+  connect?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
+}
+
+export type MembershipUpdateManyWithoutWorkspaceNestedInput = {
+  create?: Prisma.XOR<Prisma.MembershipCreateWithoutWorkspaceInput, Prisma.MembershipUncheckedCreateWithoutWorkspaceInput> | Prisma.MembershipCreateWithoutWorkspaceInput[] | Prisma.MembershipUncheckedCreateWithoutWorkspaceInput[]
+  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutWorkspaceInput | Prisma.MembershipCreateOrConnectWithoutWorkspaceInput[]
+  upsert?: Prisma.MembershipUpsertWithWhereUniqueWithoutWorkspaceInput | Prisma.MembershipUpsertWithWhereUniqueWithoutWorkspaceInput[]
+  createMany?: Prisma.MembershipCreateManyWorkspaceInputEnvelope
+  set?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
+  disconnect?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
+  delete?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
+  connect?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
+  update?: Prisma.MembershipUpdateWithWhereUniqueWithoutWorkspaceInput | Prisma.MembershipUpdateWithWhereUniqueWithoutWorkspaceInput[]
+  updateMany?: Prisma.MembershipUpdateManyWithWhereWithoutWorkspaceInput | Prisma.MembershipUpdateManyWithWhereWithoutWorkspaceInput[]
+  deleteMany?: Prisma.MembershipScalarWhereInput | Prisma.MembershipScalarWhereInput[]
+}
+
+export type MembershipUncheckedUpdateManyWithoutWorkspaceNestedInput = {
+  create?: Prisma.XOR<Prisma.MembershipCreateWithoutWorkspaceInput, Prisma.MembershipUncheckedCreateWithoutWorkspaceInput> | Prisma.MembershipCreateWithoutWorkspaceInput[] | Prisma.MembershipUncheckedCreateWithoutWorkspaceInput[]
+  connectOrCreate?: Prisma.MembershipCreateOrConnectWithoutWorkspaceInput | Prisma.MembershipCreateOrConnectWithoutWorkspaceInput[]
+  upsert?: Prisma.MembershipUpsertWithWhereUniqueWithoutWorkspaceInput | Prisma.MembershipUpsertWithWhereUniqueWithoutWorkspaceInput[]
+  createMany?: Prisma.MembershipCreateManyWorkspaceInputEnvelope
+  set?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
+  disconnect?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
+  delete?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
+  connect?: Prisma.MembershipWhereUniqueInput | Prisma.MembershipWhereUniqueInput[]
+  update?: Prisma.MembershipUpdateWithWhereUniqueWithoutWorkspaceInput | Prisma.MembershipUpdateWithWhereUniqueWithoutWorkspaceInput[]
+  updateMany?: Prisma.MembershipUpdateManyWithWhereWithoutWorkspaceInput | Prisma.MembershipUpdateManyWithWhereWithoutWorkspaceInput[]
+  deleteMany?: Prisma.MembershipScalarWhereInput | Prisma.MembershipScalarWhereInput[]
+}
+
+export type EnumWorkspaceRoleFieldUpdateOperationsInput = {
+  set?: $Enums.WorkspaceRole
 }
 
 export type MembershipCreateWithoutUserInput = {
   id?: string
-  status?: string
-  startDate?: Date | string
-  endDate?: Date | string | null
+  role?: $Enums.WorkspaceRole
   createdAt?: Date | string
   updatedAt?: Date | string
-  plan: Prisma.PlanCreateNestedOneWithoutMembershipsInput
+  workspace: Prisma.WorkspaceCreateNestedOneWithoutMembershipsInput
 }
 
 export type MembershipUncheckedCreateWithoutUserInput = {
   id?: string
-  planId: string
-  status?: string
-  startDate?: Date | string
-  endDate?: Date | string | null
+  workspaceId: string
+  role?: $Enums.WorkspaceRole
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -489,81 +456,25 @@ export type MembershipCreateOrConnectWithoutUserInput = {
   create: Prisma.XOR<Prisma.MembershipCreateWithoutUserInput, Prisma.MembershipUncheckedCreateWithoutUserInput>
 }
 
-export type MembershipUpsertWithoutUserInput = {
-  update: Prisma.XOR<Prisma.MembershipUpdateWithoutUserInput, Prisma.MembershipUncheckedUpdateWithoutUserInput>
-  create: Prisma.XOR<Prisma.MembershipCreateWithoutUserInput, Prisma.MembershipUncheckedCreateWithoutUserInput>
-  where?: Prisma.MembershipWhereInput
-}
-
-export type MembershipUpdateToOneWithWhereWithoutUserInput = {
-  where?: Prisma.MembershipWhereInput
-  data: Prisma.XOR<Prisma.MembershipUpdateWithoutUserInput, Prisma.MembershipUncheckedUpdateWithoutUserInput>
-}
-
-export type MembershipUpdateWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  plan?: Prisma.PlanUpdateOneRequiredWithoutMembershipsNestedInput
-}
-
-export type MembershipUncheckedUpdateWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  planId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type MembershipCreateWithoutPlanInput = {
-  id?: string
-  status?: string
-  startDate?: Date | string
-  endDate?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  user: Prisma.UserCreateNestedOneWithoutMembershipInput
-}
-
-export type MembershipUncheckedCreateWithoutPlanInput = {
-  id?: string
-  userId: string
-  status?: string
-  startDate?: Date | string
-  endDate?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type MembershipCreateOrConnectWithoutPlanInput = {
-  where: Prisma.MembershipWhereUniqueInput
-  create: Prisma.XOR<Prisma.MembershipCreateWithoutPlanInput, Prisma.MembershipUncheckedCreateWithoutPlanInput>
-}
-
-export type MembershipCreateManyPlanInputEnvelope = {
-  data: Prisma.MembershipCreateManyPlanInput | Prisma.MembershipCreateManyPlanInput[]
+export type MembershipCreateManyUserInputEnvelope = {
+  data: Prisma.MembershipCreateManyUserInput | Prisma.MembershipCreateManyUserInput[]
   skipDuplicates?: boolean
 }
 
-export type MembershipUpsertWithWhereUniqueWithoutPlanInput = {
+export type MembershipUpsertWithWhereUniqueWithoutUserInput = {
   where: Prisma.MembershipWhereUniqueInput
-  update: Prisma.XOR<Prisma.MembershipUpdateWithoutPlanInput, Prisma.MembershipUncheckedUpdateWithoutPlanInput>
-  create: Prisma.XOR<Prisma.MembershipCreateWithoutPlanInput, Prisma.MembershipUncheckedCreateWithoutPlanInput>
+  update: Prisma.XOR<Prisma.MembershipUpdateWithoutUserInput, Prisma.MembershipUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.MembershipCreateWithoutUserInput, Prisma.MembershipUncheckedCreateWithoutUserInput>
 }
 
-export type MembershipUpdateWithWhereUniqueWithoutPlanInput = {
+export type MembershipUpdateWithWhereUniqueWithoutUserInput = {
   where: Prisma.MembershipWhereUniqueInput
-  data: Prisma.XOR<Prisma.MembershipUpdateWithoutPlanInput, Prisma.MembershipUncheckedUpdateWithoutPlanInput>
+  data: Prisma.XOR<Prisma.MembershipUpdateWithoutUserInput, Prisma.MembershipUncheckedUpdateWithoutUserInput>
 }
 
-export type MembershipUpdateManyWithWhereWithoutPlanInput = {
+export type MembershipUpdateManyWithWhereWithoutUserInput = {
   where: Prisma.MembershipScalarWhereInput
-  data: Prisma.XOR<Prisma.MembershipUpdateManyMutationInput, Prisma.MembershipUncheckedUpdateManyWithoutPlanInput>
+  data: Prisma.XOR<Prisma.MembershipUpdateManyMutationInput, Prisma.MembershipUncheckedUpdateManyWithoutUserInput>
 }
 
 export type MembershipScalarWhereInput = {
@@ -572,50 +483,114 @@ export type MembershipScalarWhereInput = {
   NOT?: Prisma.MembershipScalarWhereInput | Prisma.MembershipScalarWhereInput[]
   id?: Prisma.StringFilter<"Membership"> | string
   userId?: Prisma.StringFilter<"Membership"> | string
-  planId?: Prisma.StringFilter<"Membership"> | string
-  status?: Prisma.StringFilter<"Membership"> | string
-  startDate?: Prisma.DateTimeFilter<"Membership"> | Date | string
-  endDate?: Prisma.DateTimeNullableFilter<"Membership"> | Date | string | null
+  workspaceId?: Prisma.StringFilter<"Membership"> | string
+  role?: Prisma.EnumWorkspaceRoleFilter<"Membership"> | $Enums.WorkspaceRole
   createdAt?: Prisma.DateTimeFilter<"Membership"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Membership"> | Date | string
 }
 
-export type MembershipCreateManyPlanInput = {
+export type MembershipCreateWithoutWorkspaceInput = {
+  id?: string
+  role?: $Enums.WorkspaceRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutMembershipsInput
+}
+
+export type MembershipUncheckedCreateWithoutWorkspaceInput = {
   id?: string
   userId: string
-  status?: string
-  startDate?: Date | string
-  endDate?: Date | string | null
+  role?: $Enums.WorkspaceRole
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
-export type MembershipUpdateWithoutPlanInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.UserUpdateOneRequiredWithoutMembershipNestedInput
+export type MembershipCreateOrConnectWithoutWorkspaceInput = {
+  where: Prisma.MembershipWhereUniqueInput
+  create: Prisma.XOR<Prisma.MembershipCreateWithoutWorkspaceInput, Prisma.MembershipUncheckedCreateWithoutWorkspaceInput>
 }
 
-export type MembershipUncheckedUpdateWithoutPlanInput = {
+export type MembershipCreateManyWorkspaceInputEnvelope = {
+  data: Prisma.MembershipCreateManyWorkspaceInput | Prisma.MembershipCreateManyWorkspaceInput[]
+  skipDuplicates?: boolean
+}
+
+export type MembershipUpsertWithWhereUniqueWithoutWorkspaceInput = {
+  where: Prisma.MembershipWhereUniqueInput
+  update: Prisma.XOR<Prisma.MembershipUpdateWithoutWorkspaceInput, Prisma.MembershipUncheckedUpdateWithoutWorkspaceInput>
+  create: Prisma.XOR<Prisma.MembershipCreateWithoutWorkspaceInput, Prisma.MembershipUncheckedCreateWithoutWorkspaceInput>
+}
+
+export type MembershipUpdateWithWhereUniqueWithoutWorkspaceInput = {
+  where: Prisma.MembershipWhereUniqueInput
+  data: Prisma.XOR<Prisma.MembershipUpdateWithoutWorkspaceInput, Prisma.MembershipUncheckedUpdateWithoutWorkspaceInput>
+}
+
+export type MembershipUpdateManyWithWhereWithoutWorkspaceInput = {
+  where: Prisma.MembershipScalarWhereInput
+  data: Prisma.XOR<Prisma.MembershipUpdateManyMutationInput, Prisma.MembershipUncheckedUpdateManyWithoutWorkspaceInput>
+}
+
+export type MembershipCreateManyUserInput = {
+  id?: string
+  workspaceId: string
+  role?: $Enums.WorkspaceRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type MembershipUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  role?: Prisma.EnumWorkspaceRoleFieldUpdateOperationsInput | $Enums.WorkspaceRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutMembershipsNestedInput
+}
+
+export type MembershipUncheckedUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumWorkspaceRoleFieldUpdateOperationsInput | $Enums.WorkspaceRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type MembershipUncheckedUpdateManyWithoutPlanInput = {
+export type MembershipUncheckedUpdateManyWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumWorkspaceRoleFieldUpdateOperationsInput | $Enums.WorkspaceRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type MembershipCreateManyWorkspaceInput = {
+  id?: string
+  userId: string
+  role?: $Enums.WorkspaceRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type MembershipUpdateWithoutWorkspaceInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumWorkspaceRoleFieldUpdateOperationsInput | $Enums.WorkspaceRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutMembershipsNestedInput
+}
+
+export type MembershipUncheckedUpdateWithoutWorkspaceInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  role?: Prisma.EnumWorkspaceRoleFieldUpdateOperationsInput | $Enums.WorkspaceRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type MembershipUncheckedUpdateManyWithoutWorkspaceInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumWorkspaceRoleFieldUpdateOperationsInput | $Enums.WorkspaceRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -625,80 +600,70 @@ export type MembershipUncheckedUpdateManyWithoutPlanInput = {
 export type MembershipSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
-  planId?: boolean
-  status?: boolean
-  startDate?: boolean
-  endDate?: boolean
+  workspaceId?: boolean
+  role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  plan?: boolean | Prisma.PlanDefaultArgs<ExtArgs>
+  workspace?: boolean | Prisma.WorkspaceDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["membership"]>
 
 export type MembershipSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
-  planId?: boolean
-  status?: boolean
-  startDate?: boolean
-  endDate?: boolean
+  workspaceId?: boolean
+  role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  plan?: boolean | Prisma.PlanDefaultArgs<ExtArgs>
+  workspace?: boolean | Prisma.WorkspaceDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["membership"]>
 
 export type MembershipSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
-  planId?: boolean
-  status?: boolean
-  startDate?: boolean
-  endDate?: boolean
+  workspaceId?: boolean
+  role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  plan?: boolean | Prisma.PlanDefaultArgs<ExtArgs>
+  workspace?: boolean | Prisma.WorkspaceDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["membership"]>
 
 export type MembershipSelectScalar = {
   id?: boolean
   userId?: boolean
-  planId?: boolean
-  status?: boolean
-  startDate?: boolean
-  endDate?: boolean
+  workspaceId?: boolean
+  role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type MembershipOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "planId" | "status" | "startDate" | "endDate" | "createdAt" | "updatedAt", ExtArgs["result"]["membership"]>
+export type MembershipOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "workspaceId" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["membership"]>
 export type MembershipInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  plan?: boolean | Prisma.PlanDefaultArgs<ExtArgs>
+  workspace?: boolean | Prisma.WorkspaceDefaultArgs<ExtArgs>
 }
 export type MembershipIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  plan?: boolean | Prisma.PlanDefaultArgs<ExtArgs>
+  workspace?: boolean | Prisma.WorkspaceDefaultArgs<ExtArgs>
 }
 export type MembershipIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  plan?: boolean | Prisma.PlanDefaultArgs<ExtArgs>
+  workspace?: boolean | Prisma.WorkspaceDefaultArgs<ExtArgs>
 }
 
 export type $MembershipPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Membership"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
-    plan: Prisma.$PlanPayload<ExtArgs>
+    workspace: Prisma.$WorkspacePayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string
-    planId: string
-    status: string
-    startDate: Date
-    endDate: Date | null
+    workspaceId: string
+    role: $Enums.WorkspaceRole
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["membership"]>
@@ -1096,7 +1061,7 @@ readonly fields: MembershipFieldRefs;
 export interface Prisma__MembershipClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  plan<T extends Prisma.PlanDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PlanDefaultArgs<ExtArgs>>): Prisma.Prisma__PlanClient<runtime.Types.Result.GetResult<Prisma.$PlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  workspace<T extends Prisma.WorkspaceDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkspaceDefaultArgs<ExtArgs>>): Prisma.Prisma__WorkspaceClient<runtime.Types.Result.GetResult<Prisma.$WorkspacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1128,10 +1093,8 @@ export interface Prisma__MembershipClient<T, Null = never, ExtArgs extends runti
 export interface MembershipFieldRefs {
   readonly id: Prisma.FieldRef<"Membership", 'String'>
   readonly userId: Prisma.FieldRef<"Membership", 'String'>
-  readonly planId: Prisma.FieldRef<"Membership", 'String'>
-  readonly status: Prisma.FieldRef<"Membership", 'String'>
-  readonly startDate: Prisma.FieldRef<"Membership", 'DateTime'>
-  readonly endDate: Prisma.FieldRef<"Membership", 'DateTime'>
+  readonly workspaceId: Prisma.FieldRef<"Membership", 'String'>
+  readonly role: Prisma.FieldRef<"Membership", 'WorkspaceRole'>
   readonly createdAt: Prisma.FieldRef<"Membership", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Membership", 'DateTime'>
 }

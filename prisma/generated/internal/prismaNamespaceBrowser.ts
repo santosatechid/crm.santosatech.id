@@ -55,14 +55,20 @@ export const ModelName = {
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
-  UserData: 'UserData',
-  Role: 'Role',
-  Branch: 'Branch',
-  Notification: 'Notification',
-  Announcement: 'Announcement',
-  Plan: 'Plan',
+  Workspace: 'Workspace',
   Membership: 'Membership',
-  Client: 'Client'
+  WorkspaceInvite: 'WorkspaceInvite',
+  Client: 'Client',
+  Contact: 'Contact',
+  ClientNote: 'ClientNote',
+  Invoice: 'Invoice',
+  InvoiceItem: 'InvoiceItem',
+  Payment: 'Payment',
+  SignatureRequest: 'SignatureRequest',
+  Task: 'Task',
+  TaskComment: 'TaskComment',
+  ActivityLog: 'ActivityLog',
+  Plan: 'Plan'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -87,13 +93,13 @@ export const UserScalarFieldEnum = {
   email: 'email',
   emailVerified: 'emailVerified',
   image: 'image',
+  phone: 'phone',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  banExpires: 'banExpires',
-  banReason: 'banReason',
   banned: 'banned',
-  role: 'role',
-  clientId: 'clientId'
+  banReason: 'banReason',
+  banExpires: 'banExpires',
+  role: 'role'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -146,106 +152,219 @@ export const VerificationScalarFieldEnum = {
 export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
 
 
-export const UserDataScalarFieldEnum = {
+export const WorkspaceScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
-  academicYearId: 'academicYearId',
-  address: 'address',
-  avatarUrl: 'avatarUrl',
-  birthDate: 'birthDate',
-  birthPlace: 'birthPlace',
-  classId: 'classId',
-  employeeId: 'employeeId',
-  endDate: 'endDate',
-  enrollmentDate: 'enrollmentDate',
-  gender: 'gender',
-  graduationDate: 'graduationDate',
-  branchId: 'branchId',
-  nik: 'nik',
-  nisn: 'nisn',
-  parentPhone: 'parentPhone',
-  position: 'position',
-  relation: 'relation',
-  roleId: 'roleId',
-  startDate: 'startDate',
-  status: 'status',
-  studentIds: 'studentIds',
+  name: 'name',
+  slug: 'slug',
+  logoUrl: 'logoUrl',
   email: 'email',
-  name: 'name',
-  isActive: 'isActive',
-  clientId: 'clientId',
-  tahfidzGroupId: 'tahfidzGroupId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type UserDataScalarFieldEnum = (typeof UserDataScalarFieldEnum)[keyof typeof UserDataScalarFieldEnum]
-
-
-export const RoleScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  description: 'description',
-  clientId: 'clientId',
-  permissions: 'permissions',
-  isActive: 'isActive'
-} as const
-
-export type RoleScalarFieldEnum = (typeof RoleScalarFieldEnum)[keyof typeof RoleScalarFieldEnum]
-
-
-export const BranchScalarFieldEnum = {
-  id: 'id',
-  code: 'code',
-  name: 'name',
-  description: 'description',
-  isActive: 'isActive',
-  address: 'address',
   phone: 'phone',
-  adminName: 'adminName',
-  signatureUrl: 'signatureUrl',
-  clientId: 'clientId',
+  address: 'address',
+  bankName: 'bankName',
+  bankAccountNumber: 'bankAccountNumber',
+  bankAccountName: 'bankAccountName',
+  invoiceNumberFormat: 'invoiceNumberFormat',
+  invoiceNextNumber: 'invoiceNextNumber',
+  defaultTaxRate: 'defaultTaxRate',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type BranchScalarFieldEnum = (typeof BranchScalarFieldEnum)[keyof typeof BranchScalarFieldEnum]
+export type WorkspaceScalarFieldEnum = (typeof WorkspaceScalarFieldEnum)[keyof typeof WorkspaceScalarFieldEnum]
 
 
-export const NotificationScalarFieldEnum = {
+export const MembershipScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  title: 'title',
-  message: 'message',
-  type: 'type',
-  category: 'category',
-  isRead: 'isRead',
-  link: 'link',
-  data: 'data',
+  workspaceId: 'workspaceId',
+  role: 'role',
   createdAt: 'createdAt',
-  readAt: 'readAt'
+  updatedAt: 'updatedAt'
 } as const
 
-export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+export type MembershipScalarFieldEnum = (typeof MembershipScalarFieldEnum)[keyof typeof MembershipScalarFieldEnum]
 
 
-export const AnnouncementScalarFieldEnum = {
+export const WorkspaceInviteScalarFieldEnum = {
   id: 'id',
-  title: 'title',
+  workspaceId: 'workspaceId',
+  email: 'email',
+  role: 'role',
+  token: 'token',
+  invitedById: 'invitedById',
+  expiresAt: 'expiresAt',
+  acceptedAt: 'acceptedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type WorkspaceInviteScalarFieldEnum = (typeof WorkspaceInviteScalarFieldEnum)[keyof typeof WorkspaceInviteScalarFieldEnum]
+
+
+export const ClientScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  name: 'name',
+  email: 'email',
+  phone: 'phone',
+  address: 'address',
+  taxId: 'taxId',
+  status: 'status',
+  archivedAt: 'archivedAt',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ClientScalarFieldEnum = (typeof ClientScalarFieldEnum)[keyof typeof ClientScalarFieldEnum]
+
+
+export const ContactScalarFieldEnum = {
+  id: 'id',
+  clientId: 'clientId',
+  name: 'name',
+  position: 'position',
+  email: 'email',
+  phone: 'phone',
+  isPrimary: 'isPrimary',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ContactScalarFieldEnum = (typeof ContactScalarFieldEnum)[keyof typeof ContactScalarFieldEnum]
+
+
+export const ClientNoteScalarFieldEnum = {
+  id: 'id',
+  clientId: 'clientId',
+  authorId: 'authorId',
   content: 'content',
-  imageUrl: 'imageUrl',
-  linkUrl: 'linkUrl',
-  startDate: 'startDate',
-  endDate: 'endDate',
-  userId: 'userId',
+  occurredAt: 'occurredAt',
+  createdAt: 'createdAt'
+} as const
+
+export type ClientNoteScalarFieldEnum = (typeof ClientNoteScalarFieldEnum)[keyof typeof ClientNoteScalarFieldEnum]
+
+
+export const InvoiceScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
   clientId: 'clientId',
-  isActive: 'isActive',
-  isPublished: 'isPublished',
+  taskId: 'taskId',
+  number: 'number',
+  status: 'status',
+  issueDate: 'issueDate',
+  dueDate: 'dueDate',
+  subtotal: 'subtotal',
+  discount: 'discount',
+  taxRate: 'taxRate',
+  taxAmount: 'taxAmount',
+  total: 'total',
+  note: 'note',
+  createdById: 'createdById',
+  sentAt: 'sentAt',
+  paidAt: 'paidAt',
+  cancelledAt: 'cancelledAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type AnnouncementScalarFieldEnum = (typeof AnnouncementScalarFieldEnum)[keyof typeof AnnouncementScalarFieldEnum]
+export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
+
+
+export const InvoiceItemScalarFieldEnum = {
+  id: 'id',
+  invoiceId: 'invoiceId',
+  description: 'description',
+  quantity: 'quantity',
+  unitPrice: 'unitPrice',
+  amount: 'amount',
+  sortOrder: 'sortOrder'
+} as const
+
+export type InvoiceItemScalarFieldEnum = (typeof InvoiceItemScalarFieldEnum)[keyof typeof InvoiceItemScalarFieldEnum]
+
+
+export const PaymentScalarFieldEnum = {
+  id: 'id',
+  invoiceId: 'invoiceId',
+  amount: 'amount',
+  paidAt: 'paidAt',
+  method: 'method',
+  note: 'note',
+  recordedById: 'recordedById',
+  createdAt: 'createdAt'
+} as const
+
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const SignatureRequestScalarFieldEnum = {
+  id: 'id',
+  invoiceId: 'invoiceId',
+  tokenHash: 'tokenHash',
+  status: 'status',
+  expiresAt: 'expiresAt',
+  createdById: 'createdById',
+  signerName: 'signerName',
+  signerEmail: 'signerEmail',
+  signerIp: 'signerIp',
+  signerUserAgent: 'signerUserAgent',
+  viewedAt: 'viewedAt',
+  signedAt: 'signedAt',
+  declinedAt: 'declinedAt',
+  declineReason: 'declineReason',
+  signatureImageUrl: 'signatureImageUrl',
+  signedPdfUrl: 'signedPdfUrl',
+  signedPdfHash: 'signedPdfHash',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SignatureRequestScalarFieldEnum = (typeof SignatureRequestScalarFieldEnum)[keyof typeof SignatureRequestScalarFieldEnum]
+
+
+export const TaskScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  clientId: 'clientId',
+  title: 'title',
+  description: 'description',
+  assigneeId: 'assigneeId',
+  dueDate: 'dueDate',
+  priority: 'priority',
+  status: 'status',
+  createdById: 'createdById',
+  completedAt: 'completedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TaskScalarFieldEnum = (typeof TaskScalarFieldEnum)[keyof typeof TaskScalarFieldEnum]
+
+
+export const TaskCommentScalarFieldEnum = {
+  id: 'id',
+  taskId: 'taskId',
+  authorId: 'authorId',
+  content: 'content',
+  createdAt: 'createdAt'
+} as const
+
+export type TaskCommentScalarFieldEnum = (typeof TaskCommentScalarFieldEnum)[keyof typeof TaskCommentScalarFieldEnum]
+
+
+export const ActivityLogScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  actorId: 'actorId',
+  action: 'action',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+} as const
+
+export type ActivityLogScalarFieldEnum = (typeof ActivityLogScalarFieldEnum)[keyof typeof ActivityLogScalarFieldEnum]
 
 
 export const PlanScalarFieldEnum = {
@@ -256,6 +375,7 @@ export const PlanScalarFieldEnum = {
   price: 'price',
   interval: 'interval',
   features: 'features',
+  maxUsers: 'maxUsers',
   isPopular: 'isPopular',
   isActive: 'isActive',
   createdAt: 'createdAt',
@@ -263,36 +383,6 @@ export const PlanScalarFieldEnum = {
 } as const
 
 export type PlanScalarFieldEnum = (typeof PlanScalarFieldEnum)[keyof typeof PlanScalarFieldEnum]
-
-
-export const MembershipScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  planId: 'planId',
-  status: 'status',
-  startDate: 'startDate',
-  endDate: 'endDate',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type MembershipScalarFieldEnum = (typeof MembershipScalarFieldEnum)[keyof typeof MembershipScalarFieldEnum]
-
-
-export const ClientScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  slug: 'slug',
-  email: 'email',
-  phone: 'phone',
-  address: 'address',
-  logoUrl: 'logoUrl',
-  isActive: 'isActive',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type ClientScalarFieldEnum = (typeof ClientScalarFieldEnum)[keyof typeof ClientScalarFieldEnum]
 
 
 export const SortOrder = {

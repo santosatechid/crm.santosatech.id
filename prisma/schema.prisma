@@ -9,26 +9,38 @@ datasource db {
   provider = "postgresql"
 }
 
+// ---------------------------------------------------------------------------
+// Auth (Better Auth)
+// ---------------------------------------------------------------------------
+
 model User {
-  id            String    @id @unique
+  id            String    @id
   name          String
   email         String    @unique
-  emailVerified Boolean
+  emailVerified Boolean   @default(false)
   image         String?
+  phone         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  banExpires    DateTime?
-  banReason     String?
   banned        Boolean?  @default(false)
+  banReason     String?
+  banExpires    DateTime?
   role          String?   @default("user")
-  clientId      String?
-  accounts      Account[]
-  sessions      Session[]
-  userData      UserData?
-  membership    Membership?
-  client        Client?     @relation(fields: [clientId], references: [id], onDelete: SetNull)
 
-  @@index([clientId])
+  accounts        Account[]
+  sessions        Session[]
+  memberships     Membership[]
+  invitesSent     WorkspaceInvite[] @relation("InviteSender")
+  clientsCreated  Client[]          @relation("ClientCreator")
+  clientNotes     ClientNote[]
+  invoicesCreated Invoice[]         @relation("InvoiceCreator")
+  payments        Payment[]
+  tasksAssigned   Task[]            @relation("TaskAssignee")
+  tasksCreated    Task[]            @relation("TaskCreator")
+  taskComments    TaskComment[]
+  activityLogs    ActivityLog[]
+  signatureRequests SignatureRequest[] @relation("SignatureRequester")
+
   @@map("user")
 }
 
@@ -81,181 +93,367 @@ model Verification {
   @@map("verification")
 }
 
-model UserData {
-  id             String         @id @unique @default(cuid())
-  userId         String?        @unique
-  academicYearId String?
-  address        String?
-  avatarUrl      String?
-  birthDate      DateTime?
-  birthPlace     String?
-  classId        String?
-  employeeId     String?
-  endDate        DateTime?
-  enrollmentDate DateTime?
-  gender         String?
-  graduationDate DateTime?
-  branchId       String?
-  nik            String?
-  nisn           String?
-  parentPhone    String?
-  position       String?
-  relation       String?
-  roleId         String?
-  startDate      DateTime?
-  status         String?        @default("active")
-  studentIds     String[]
-  email          String?
-  name           String
-  isActive       Boolean        @default(true)
-  clientId       String?
-  tahfidzGroupId String?
-  createdAt      DateTime?      @default(now())
-  updatedAt      DateTime?      @updatedAt
-  Announcements  Announcement[]
-  notifications  Notification[]
-  branch         Branch?        @relation("UserBranch", fields: [branchId], references: [id])
-  role           Role?          @relation(fields: [roleId], references: [id])
-  user           User?          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  client         Client?        @relation(fields: [clientId], references: [id], onDelete: SetNull)
+// ---------------------------------------------------------------------------
+// Workspace (tenant = one office)
+// ---------------------------------------------------------------------------
 
-  @@index([clientId])
-  @@index([academicYearId])
-  @@index([classId])
-  @@index([branchId])
-  @@index([roleId])
-  @@index([tahfidzGroupId])
-  @@index([status])
-  @@index([email])
-  @@map("user_data")
+enum WorkspaceRole {
+  OWNER
+  ADMIN
+  MEMBER
 }
 
-model Role {
-  id           String     @id @default(cuid())
-  name         String
-  description  String
-  clientId     String?
-  permissions  String[]
-  isActive     Boolean    @default(true)
-  userData     UserData[]
-  client       Client?    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+model Workspace {
+  id                  String   @id @default(cuid())
+  name                String
+  slug                String   @unique
+  logoUrl             String?
+  email               String?
+  phone               String?
+  address             String?
+  bankName            String?
+  bankAccountNumber   String?
+  bankAccountName     String?
+  invoiceNumberFormat String   @default("INV-{YYYY}-{SEQ:4}")
+  invoiceNextNumber   Int      @default(1)
+  defaultTaxRate      Decimal  @default(0) @db.Decimal(5, 2)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 
-  @@unique([clientId, name])
-  @@index([clientId])
-  @@map("roles")
-}
+  memberships  Membership[]
+  invites      WorkspaceInvite[]
+  clients      Client[]
+  invoices     Invoice[]
+  tasks        Task[]
+  activityLogs ActivityLog[]
 
-model Branch {
-  id           String     @id @default(cuid())
-  code         String
-  name         String
-  description  String?
-  isActive     Boolean    @default(true)
-  address      String?
-  phone        String?
-  adminName    String?
-  signatureUrl String?
-  clientId     String?
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
-  users        UserData[] @relation("UserBranch")
-  client       Client?    @relation(fields: [clientId], references: [id], onDelete: Cascade)
-
-  @@unique([clientId, code])
-  @@index([clientId])
-  @@map("branches")
-}
-
-model Notification {
-  id        String    @id @default(cuid())
-  userId    String
-  title     String
-  message   String
-  type      String
-  category  String?
-  isRead    Boolean   @default(false)
-  link      String?
-  data      Json?
-  createdAt DateTime  @default(now())
-  readAt    DateTime?
-  user      UserData  @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
-  @@index([isRead])
-  @@map("notifications")
-}
-
-model Announcement {
-  id           String    @id @default(cuid())
-  title        String
-  content      String
-  imageUrl     String?
-  linkUrl      String?
-  startDate    DateTime?
-  endDate      DateTime?
-  userId       String?
-  clientId     String
-  isActive     Boolean   @default(true)
-  isPublished  Boolean   @default(false)
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  user         UserData? @relation(fields: [userId], references: [id], onDelete: Cascade)
-  client       Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
-
-  @@index([clientId])
-  @@map("announcements")
-}
-
-model Plan {
-  id          String       @id @default(cuid())
-  slug        String       @unique
-  name        String
-  description String?
-  price       Int          @default(0)
-  interval    String       @default("month")
-  features    String[]
-  isPopular   Boolean      @default(false)
-  isActive    Boolean      @default(true)
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  memberships Membership[]
-
-  @@map("plans")
+  @@map("workspaces")
 }
 
 model Membership {
-  id        String    @id @default(cuid())
-  userId    String    @unique
-  planId    String
-  status    String    @default("active")
-  startDate DateTime  @default(now())
-  endDate   DateTime?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  plan      Plan      @relation(fields: [planId], references: [id], onDelete: Restrict)
+  id          String        @id @default(cuid())
+  userId      String
+  workspaceId String
+  role        WorkspaceRole @default(MEMBER)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspace   Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 
-  @@index([planId])
-  @@index([status])
+  @@unique([workspaceId, userId])
+  @@index([userId])
   @@map("memberships")
 }
 
-model Client {
-  id            String         @id @default(cuid())
-  name          String
-  slug          String         @unique
-  email         String?
-  phone         String?
-  address       String?
-  logoUrl       String?
-  isActive      Boolean        @default(true)
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-  users         User[]
-  userData      UserData[]
-  roles         Role[]
-  branches      Branch[]
-  announcements Announcement[]
+model WorkspaceInvite {
+  id          String        @id @default(cuid())
+  workspaceId String
+  email       String
+  role        WorkspaceRole @default(MEMBER)
+  token       String        @unique
+  invitedById String?
+  expiresAt   DateTime
+  acceptedAt  DateTime?
+  createdAt   DateTime      @default(now())
+  workspace   Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  invitedBy   User?         @relation("InviteSender", fields: [invitedById], references: [id], onDelete: SetNull)
 
+  @@unique([workspaceId, email])
+  @@index([email])
+  @@map("workspace_invites")
+}
+
+// ---------------------------------------------------------------------------
+// CRM: clients, contacts, notes
+// ---------------------------------------------------------------------------
+
+enum ClientStatus {
+  PROSPECT
+  ACTIVE
+  INACTIVE
+}
+
+model Client {
+  id          String       @id @default(cuid())
+  workspaceId String
+  name        String
+  email       String?
+  phone       String?
+  address     String?
+  taxId       String?
+  status      ClientStatus @default(PROSPECT)
+  archivedAt  DateTime?
+  createdById String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  workspace   Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  createdBy   User?        @relation("ClientCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  contacts    Contact[]
+  clientNotes ClientNote[]
+  invoices    Invoice[]
+  tasks       Task[]
+
+  @@index([workspaceId, status])
+  @@index([workspaceId, name])
   @@map("clients")
+}
+
+model Contact {
+  id        String   @id @default(cuid())
+  clientId  String
+  name      String
+  position  String?
+  email     String?
+  phone     String?
+  isPrimary Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@index([clientId])
+  @@map("contacts")
+}
+
+model ClientNote {
+  id         String   @id @default(cuid())
+  clientId   String
+  authorId   String?
+  content    String
+  occurredAt DateTime @default(now())
+  createdAt  DateTime @default(now())
+  client     Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  author     User?    @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
+  @@index([clientId, occurredAt])
+  @@map("client_notes")
+}
+
+// ---------------------------------------------------------------------------
+// Invoicing
+// ---------------------------------------------------------------------------
+
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  PARTIALLY_PAID
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+enum PaymentMethod {
+  TRANSFER
+  CASH
+  OTHER
+}
+
+model Invoice {
+  id          String        @id @default(cuid())
+  workspaceId String
+  clientId    String
+  taskId      String?
+  number      String
+  status      InvoiceStatus @default(DRAFT)
+  issueDate   DateTime      @default(now())
+  dueDate     DateTime
+  subtotal    Int
+  discount    Int           @default(0)
+  taxRate     Decimal       @default(0) @db.Decimal(5, 2)
+  taxAmount   Int           @default(0)
+  total       Int
+  note        String?
+  createdById String?
+  sentAt      DateTime?
+  paidAt      DateTime?
+  cancelledAt DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  workspace Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  client    Client        @relation(fields: [clientId], references: [id], onDelete: Restrict)
+  task      Task?         @relation(fields: [taskId], references: [id], onDelete: SetNull)
+  createdBy User?         @relation("InvoiceCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  items     InvoiceItem[]
+  payments  Payment[]
+  signatureRequests SignatureRequest[]
+
+  @@unique([workspaceId, number])
+  @@index([workspaceId, status])
+  @@index([workspaceId, dueDate])
+  @@index([clientId])
+  @@index([taskId])
+  @@map("invoices")
+}
+
+model InvoiceItem {
+  id          String  @id @default(cuid())
+  invoiceId   String
+  description String
+  quantity    Decimal @default(1) @db.Decimal(12, 2)
+  unitPrice   Int
+  amount      Int
+  sortOrder   Int     @default(0)
+  invoice     Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@index([invoiceId])
+  @@map("invoice_items")
+}
+
+model Payment {
+  id           String        @id @default(cuid())
+  invoiceId    String
+  amount       Int
+  paidAt       DateTime      @default(now())
+  method       PaymentMethod @default(TRANSFER)
+  note         String?
+  recordedById String?
+  createdAt    DateTime      @default(now())
+  invoice      Invoice       @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  recordedBy   User?         @relation(fields: [recordedById], references: [id], onDelete: SetNull)
+
+  @@index([invoiceId, paidAt])
+  @@map("payments")
+}
+
+// ---------------------------------------------------------------------------
+// E-signature via public link
+// ---------------------------------------------------------------------------
+
+enum SignatureStatus {
+  PENDING
+  VIEWED
+  SIGNED
+  DECLINED
+  EXPIRED
+  REVOKED
+}
+
+model SignatureRequest {
+  id                String          @id @default(cuid())
+  invoiceId         String
+  tokenHash         String          @unique
+  status            SignatureStatus @default(PENDING)
+  expiresAt         DateTime
+  createdById       String?
+  signerName        String?
+  signerEmail       String?
+  signerIp          String?
+  signerUserAgent   String?
+  viewedAt          DateTime?
+  signedAt          DateTime?
+  declinedAt        DateTime?
+  declineReason     String?
+  signatureImageUrl String?
+  signedPdfUrl      String?
+  signedPdfHash     String?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  invoice   Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  createdBy User?   @relation("SignatureRequester", fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@index([invoiceId, createdAt])
+  @@index([status, expiresAt])
+  @@map("signature_requests")
+}
+
+// ---------------------------------------------------------------------------
+// Tasks
+// ---------------------------------------------------------------------------
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  DONE
+}
+
+model Task {
+  id          String       @id @default(cuid())
+  workspaceId String
+  clientId    String?
+  title       String
+  description String?
+  assigneeId  String?
+  dueDate     DateTime?
+  priority    TaskPriority @default(MEDIUM)
+  status      TaskStatus   @default(TODO)
+  createdById String?
+  completedAt DateTime?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  workspace Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  client    Client?       @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  assignee  User?         @relation("TaskAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+  createdBy User?         @relation("TaskCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  comments  TaskComment[]
+  invoices  Invoice[]
+
+  @@index([workspaceId, status])
+  @@index([workspaceId, assigneeId])
+  @@index([workspaceId, dueDate])
+  @@index([clientId])
+  @@map("tasks")
+}
+
+model TaskComment {
+  id        String   @id @default(cuid())
+  taskId    String
+  authorId  String?
+  content   String
+  createdAt DateTime @default(now())
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  author    User?    @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
+  @@index([taskId, createdAt])
+  @@map("task_comments")
+}
+
+// ---------------------------------------------------------------------------
+// Audit trail
+// ---------------------------------------------------------------------------
+
+model ActivityLog {
+  id          String   @id @default(cuid())
+  workspaceId String
+  actorId     String?
+  action      String
+  entityType  String
+  entityId    String?
+  metadata    Json?
+  createdAt   DateTime @default(now())
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  actor       User?     @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([workspaceId, createdAt])
+  @@index([entityType, entityId])
+  @@map("activity_logs")
+}
+
+// ---------------------------------------------------------------------------
+// Billing (pricing page only; workspace subscription arrives with billing)
+// ---------------------------------------------------------------------------
+
+model Plan {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String?
+  price       Int      @default(0)
+  interval    String   @default("month")
+  features    String[]
+  maxUsers    Int?
+  isPopular   Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("plans")
 }
