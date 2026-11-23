@@ -436,7 +436,7 @@ function DataTableBetterAuth() {
 
   if (error) {
     return (
-      <div className="bg-background min-h-screen">
+      <div className="min-h-screen">
         <div className="mx-auto my-8 max-w-7xl p-6">
           <Card className="border-destructive">
             <CardContent className="pt-6">

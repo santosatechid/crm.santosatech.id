@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
+import { GlassBackground } from "@/components/glass/background";
 import OnboardingForm from "./onboardingForm";
 import { auth } from "@/services/auth/auth";
 import { prisma } from "@/services/prisma";
@@ -20,11 +21,14 @@ export default async function OnboardingPage() {
   if (user?.clientId) redirect("/dashboard");
 
   return (
-    <main className="bg-background flex min-h-screen items-center justify-center px-4 py-10">
-      <OnboardingForm
+    <main className="relative flex min-h-screen items-center justify-center px-4 py-10">
+      <GlassBackground />
+      <div className="relative z-10 w-full max-w-lg">
+        <OnboardingForm
         defaultName={session.user.name}
-        defaultEmail={session.user.email}
-      />
+          defaultEmail={session.user.email}
+        />
+      </div>
     </main>
   );
 }

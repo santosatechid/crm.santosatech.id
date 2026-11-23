@@ -2,62 +2,51 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+import { GlassBackground } from "@/components/glass/background";
+import { GlassCard } from "@/components/glass/card";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/shadcn/utils";
 
 /**
- * The entry screens, in the house style. A split screen: the form column on
- * the left, one ink panel on the right, and the page assembling itself in a
- * single cascade — 100ms per step, top to bottom. See DESIGN.md §3.
- *
- * `delay` props take the literal class, e.g. `animate-delay-300`, because
- * Tailwind only generates the ones it can read in the source.
+ * Entry screens share the landing surface: one glass card on the atmospheric
+ * backdrop, centered, with the same label hierarchy and 44pt targets. Nothing
+ * here is a separate theme.
  */
-export function EntryScreen({
-  aside,
-  children,
-}: {
-  aside?: ReactNode;
-  children: ReactNode;
-}) {
+const clientName = process.env.NEXT_PUBLIC_CLIENT_NAME || "santosa";
+
+export function EntryScreen({ children }: { children: ReactNode }) {
   return (
-    <div className="bg-background flex min-h-[100dvh] flex-col md:flex-row">
-      <section className="flex flex-1 items-center justify-center px-6 py-10 sm:px-8 sm:py-14">
-        <div className="w-full max-w-md">
-          <Link
-            href="/"
-            className="text-muted-foreground hover:text-foreground focus-visible:ring-ring/80 animate-element inline-flex items-center gap-1.5 rounded-lg text-sm font-medium underline-offset-4 hover:underline focus-visible:ring-[3px] focus-visible:outline-none"
-          >
-            <ArrowLeft className="size-4" />
-            Kembali ke beranda
-          </Link>
+    <div className="relative flex min-h-[100dvh] items-center justify-center px-5 py-12">
+      <GlassBackground />
+      <div className="relative z-10 w-full max-w-md">
+        <Link
+          href="/"
+          className="text-muted-foreground hover:text-foreground focus-visible:ring-ring/50 inline-flex min-h-11 items-center gap-1.5 rounded-full text-[14px] font-medium underline-offset-4 hover:underline focus-visible:ring-[3px] focus-visible:outline-none"
+        >
+          <ArrowLeft className="size-4" />
+          Kembali ke beranda
+        </Link>
 
+        <GlassCard className="mt-5 gap-0 rounded-[28px] p-7 sm:p-8">
+          <div className="mb-6 flex items-center gap-2.5">
+            <span className="flex size-[26px] items-center justify-center rounded-[9px] bg-primary text-[15px] font-bold text-primary-foreground">
+              {clientName.slice(0, 1)}
+            </span>
+            <span className="text-[17px] font-semibold tracking-[-0.3px]">
+              {clientName}
+            </span>
+          </div>
           {children}
-        </div>
-      </section>
-
-      {aside ? (
-        <section className="relative hidden p-4 md:block md:flex-1">
-          {aside}
-        </section>
-      ) : null}
+        </GlassCard>
+      </div>
     </div>
   );
 }
 
 /** The stacked column the form lives in. */
 export function EntryForm({ children }: { children: ReactNode }) {
-  return <div className="mt-8 flex flex-col gap-6">{children}</div>;
+  return <div className="flex flex-col gap-6">{children}</div>;
 }
-
-/**
- * The banner the entry screens open with: who this system is, said once, with
- * the way to the page written for families. The actions behind the form are
- * for people who already have an account, so the banner points the ones who do
- * not at the school day told to the family. Kept to three short lines so the
- * form column still fits a laptop screen — it arrives first, ahead of the
- * heading's own delay.
- */
 
 export function EntryHeading({
   title,
@@ -68,10 +57,10 @@ export function EntryHeading({
 }) {
   return (
     <div>
-      <h1 className="animate-element animate-delay-100 text-3xl leading-tight font-semibold tracking-tight text-balance sm:text-4xl">
+      <h1 className="animate-element animate-delay-100 text-[28px] leading-[1.2] font-semibold tracking-tight text-balance">
         {title}
       </h1>
-      <p className="animate-element animate-delay-200 text-muted-foreground mt-3 text-sm leading-relaxed text-pretty">
+      <p className="animate-element animate-delay-200 text-muted-foreground mt-2 text-[15px] leading-[22px] text-pretty">
         {description}
       </p>
     </div>
@@ -118,7 +107,7 @@ export function EntryGroup({
       aria-label={label}
       className={cn("animate-element space-y-4", delay)}
     >
-      <h2 className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
+      <h2 className="text-[11px] font-semibold tracking-[1.8px] text-white/60 uppercase">
         {label}
       </h2>
       <div className="space-y-5">{children}</div>
@@ -137,14 +126,13 @@ export function EntryDivider({
   return (
     <div
       className={cn(
-        "animate-element relative flex items-center justify-center",
+        "animate-element flex items-center gap-3",
         delay,
       )}
     >
-      <span className="border-border w-full border-t" />
-      <span className="bg-background text-muted-foreground absolute rounded-full px-4 text-sm">
-        {label}
-      </span>
+      <span className="h-px flex-1 bg-white/10" />
+      <span className="text-[12px] text-white/60">{label}</span>
+      <span className="h-px flex-1 bg-white/10" />
     </div>
   );
 }
@@ -160,7 +148,7 @@ export function EntryFooter({
   return (
     <p
       className={cn(
-        "animate-element text-muted-foreground text-center text-sm text-pretty",
+        "animate-element text-center text-[13px] text-white/60 text-pretty",
         delay,
       )}
     >
@@ -180,7 +168,7 @@ export function EntryLink({
   return (
     <Link
       href={href}
-      className="text-interactive focus-visible:ring-ring/80 rounded-lg font-medium underline-offset-4 hover:underline focus-visible:ring-[3px] focus-visible:outline-none"
+      className="text-primary focus-visible:ring-ring/50 rounded-md font-medium underline-offset-4 hover:underline focus-visible:ring-[3px] focus-visible:outline-none"
     >
       {children}
     </Link>

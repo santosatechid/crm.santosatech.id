@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Camera, Loader2, X } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -18,55 +18,21 @@ import {
   EntryLink,
   EntryScreen,
 } from "@/components/entry/Entry";
-import { signIn, signUp } from "@/services/auth/authClients";
-import { type ChangeEvent, type FormEvent, useState } from "react";
-
-async function convertImageToBase64(file: File): Promise<string> {
-  const { promise, resolve, reject } = Promise.withResolvers<string>();
-  const reader = new FileReader();
-  reader.onloadend = () => resolve(reader.result as string);
-  reader.onerror = reject;
-  reader.readAsDataURL(file);
-  return promise;
-}
+import { emailOtp, signIn, signUp } from "@/services/auth/authClients";
+import { type FormEvent, useState } from "react";
 
 export default function SignUp() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordConfirmation, setPasswordConfirmation] = useState("");
-  const [image, setImage] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.size > 2 * 1024 * 1024) {
-        toast.error("Ukuran foto maksimal 2 MB.");
-        return;
-      }
-      setImage(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleRemoveImage = () => {
-    setImage(null);
-    setImagePreview(null);
-  };
 
   const handleSignUp = async (e: FormEvent) => {
     e.preventDefault();
 
-    if (!firstName.trim()) {
-      toast.error("Nama depan wajib diisi.");
+    if (!name.trim()) {
+      toast.error("Nama lengkap wajib diisi.");
       return;
     }
     if (!email.trim()) {
@@ -77,44 +43,39 @@ export default function SignUp() {
       toast.error("Kata sandi minimal 8 karakter.");
       return;
     }
-    if (password !== passwordConfirmation) {
-      toast.error("Konfirmasi kata sandi tidak cocok.");
-      return;
-    }
 
     try {
       setLoading(true);
-      const base64Image = image ? await convertImageToBase64(image) : "";
 
-      await signUp.email({
+      const { error } = await signUp.email({ email, password, name });
+
+      if (error) {
+        toast.error(error.message || "Gagal membuat akun. Silakan coba lagi.");
+        return;
+      }
+
+      const { error: otpError } = await emailOtp.sendVerificationOtp({
         email,
-        password,
-        name: `${firstName} ${lastName}`.trim(),
-        image: base64Image,
-        callbackURL: "/dashboard",
-        fetchOptions: {
-          onRequest: () => setLoading(true),
-          onResponse: () => setLoading(false),
-          onError: (ctx) => {
-            setLoading(false);
-            toast.error(
-              ctx.error.message || "Gagal membuat akun. Silakan coba lagi.",
-            );
-          },
-          onSuccess: async () => {
-            setLoading(false);
-            toast.success("Akun berhasil dibuat! Mengarahkan...");
-            router.push("/dashboard");
-          },
-        },
+        type: "email-verification",
       });
+
+      if (otpError) {
+        toast.error(
+          otpError.message || "Gagal mengirim kode verifikasi ke email.",
+        );
+        return;
+      }
+
+      toast.success("Kode verifikasi dikirim ke email Anda.");
+      router.push(`/auth/verifyOtp?email=${encodeURIComponent(email)}`);
     } catch (err: unknown) {
-      setLoading(false);
       const message =
         err instanceof Error
           ? err.message
           : "Terjadi kesalahan saat pendaftaran";
       toast.error(message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -160,26 +121,16 @@ export default function SignUp() {
             label="Identitas"
             delay="animate-element animate-delay-300"
           >
-            <div className="grid gap-5 sm:grid-cols-2">
-              <EntryField label="Nama depan" htmlFor="first-name">
-                <Input
-                  id="first-name"
-                  placeholder="Ahmad"
-                  required
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                />
-              </EntryField>
-
-              <EntryField label="Nama belakang" htmlFor="last-name">
-                <Input
-                  id="last-name"
-                  placeholder="Ramadhan"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                />
-              </EntryField>
-            </div>
+            <EntryField label="Nama lengkap" htmlFor="name">
+              <Input
+                id="name"
+                placeholder="Ahmad Ramadhan"
+                required
+                autoComplete="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </EntryField>
 
             <EntryField label="Email" htmlFor="email">
               <Input
@@ -209,73 +160,13 @@ export default function SignUp() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </EntryField>
-
-            <EntryField
-              label="Konfirmasi kata sandi"
-              htmlFor="password_confirmation"
-            >
-              <Input
-                id="password_confirmation"
-                type="password"
-                placeholder="••••••••"
-                required
-                autoComplete="new-password"
-                value={passwordConfirmation}
-                onChange={(e) => setPasswordConfirmation(e.target.value)}
-              />
-            </EntryField>
-          </EntryGroup>
-
-          <EntryGroup
-            label="Foto profil"
-            delay="animate-element animate-delay-500"
-          >
-            <EntryField
-              label="Foto profil (opsional, maks 2MB)"
-              htmlFor="image"
-            >
-              <div className="flex items-center gap-3">
-                {imagePreview ? (
-                  <div className="border-border relative size-12 shrink-0 overflow-hidden rounded-xl border">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={imagePreview}
-                      alt="Pratinjau foto profil"
-                      className="h-full w-full object-cover"
-                    />
-                    <button
-                      type="button"
-                      onClick={handleRemoveImage}
-                      className="bg-foreground/50 focus-visible:ring-ring/80 absolute inset-0 flex items-center justify-center text-white opacity-0 transition-opacity hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-[3px] focus-visible:outline-none"
-                      aria-label="Hapus foto"
-                    >
-                      <X className="size-4" />
-                    </button>
-                  </div>
-                ) : (
-                  <div className="border-border bg-secondary text-muted-foreground flex size-12 shrink-0 items-center justify-center rounded-xl border border-dashed">
-                    <Camera className="size-5" />
-                  </div>
-                )}
-
-                <div className="flex-1">
-                  <Input
-                    id="image"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="file:bg-secondary file:rounded-lg h-11 text-xs file:mr-3 file:border-0 file:text-xs file:font-semibold"
-                  />
-                </div>
-              </div>
-            </EntryField>
           </EntryGroup>
 
           <Button
             type="submit"
             size="lg"
             disabled={loading}
-            className="animate-element animate-delay-600 w-full"
+            className="animate-element animate-delay-500 w-full"
           >
             {loading ? (
               <>
@@ -296,7 +187,7 @@ export default function SignUp() {
           size="lg"
           disabled={loading}
           onClick={handleGoogleSignUp}
-          className="animate-element animate-delay-800 w-full"
+          className="animate-element animate-delay-700 w-full"
         >
           <GoogleMark />
           Daftar dengan Google

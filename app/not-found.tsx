@@ -12,7 +12,7 @@ export default function NotFound() {
       />
 
       <div className="relative z-10 max-w-md">
-        <h1 className="text-foreground text-3xl font-extrabold tracking-tight sm:text-4xl">
+        <h1 className="text-foreground text-3xl font-bold tracking-tight sm:text-4xl">
           Halaman ini tidak ada.
         </h1>
         <p className="text-foreground/80 mt-3 text-base leading-relaxed">
